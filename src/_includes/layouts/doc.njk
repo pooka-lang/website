@@ -1,0 +1,26 @@
+---
+layout: layouts/base.njk
+---
+{%- set around = collections.guides | neighbours(page.url) %}
+<div class="wrap docs-layout">
+{% include "partials/docs-nav.njk" %}
+<article class="doc">
+  <p class="doc-group">{{ group }}</p>
+  <h1>{{ title }}</h1>
+  <div class="prose">
+{{ content | safe }}
+  </div>
+  <nav class="pager" aria-label="More guides">
+    {%- if around.previous %}<a href="{{ around.previous.url }}"><small>Previous</small><strong>← {{ around.previous.data.navTitle or around.previous.data.title }}</strong></a>{% endif %}
+    {%- if around.next %}<a class="next" href="{{ around.next.url }}"><small>Next</small><strong>{{ around.next.data.navTitle or around.next.data.title }} →</strong></a>{% endif %}
+  </nav>
+</article>
+<aside class="toc" aria-label="On this page">
+  <h4>On this page</h4>
+  <ol>
+    {%- for heading in content | outline %}
+    <li><a href="#{{ heading.id }}">{{ heading.text }}</a></li>
+    {%- endfor %}
+  </ol>
+</aside>
+</div>

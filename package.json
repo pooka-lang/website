@@ -1,0 +1,21 @@
+{
+  "name": "pooka-website",
+  "version": "1.0.0",
+  "description": "The Pooka website, pooka.run",
+  "scripts": {
+    "start": "eleventy --serve --port 8080",
+    "build": "eleventy",
+    "check:samples": "sh scripts/check-samples.sh"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.8",
+    "@11ty/eleventy-fetch": "^5.1.3",
+    "@11ty/eleventy-plugin-rss": "^2.0.4",
+    "github-slugger": "^2.0.0",
+    "markdown-it": "^15.0.3",
+    "markdown-it-anchor": "^10.1.0"
+  },
+  "private": true
+}

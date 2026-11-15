@@ -1,0 +1,12 @@
+module main
+
+external Math from erlang "math" {
+  sqrt(x: Float) -> Float
+
+  pi() -> Float
+}
+
+main() {
+  echo Math.sqrt(2.0)
+  echo Math.pi()
+}

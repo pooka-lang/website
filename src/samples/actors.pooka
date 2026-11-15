@@ -1,0 +1,20 @@
+module main
+
+actor Kettle {
+  var cups: Int = 0
+
+  be pour(count: Int) {
+    cups += count
+  }
+
+  poured() -> Int {
+    cups
+  }
+}
+
+main() {
+  let kettle = Kettle()
+  kettle.pour(2)
+  kettle.pour(1)
+  echo kettle.poured()
+}

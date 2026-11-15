@@ -1,0 +1,46 @@
+module main
+
+import pooka/dict.{Dict}
+import pooka/file
+import pooka/int
+import pooka/io
+import pooka/list
+import pooka/string
+
+count(words: List(String)) -> Dict(String, Int) {
+  list.fold(words, dict.empty(), fn(counts: Dict(String, Int), word: String) {
+    counts.upsert(word, fn(seen: Option(Int)) {
+      match seen {
+        Some(n) -> n + 1
+        None -> 1
+      }
+    })
+  })
+}
+
+main() {
+  match file.read("poem.txt") {
+    Ok(text) -> {
+      let words = text
+      |> string.lowercase
+      |> string.replace("\n", " ")
+      |> string.split(" ")
+      |> list.filter(fn(w: String) { w != "" })
+      count(words).to_list()
+      |> list.sort_by(fn(a: #(String, Int), b: #(String, Int)) {
+        int.compare(b.1, a.1)
+      })
+      |> list.take(3)
+      |> list.each(fn(pair: #(String, Int)) {
+        let _ = io.println(pair.0 + ": " + int.to_string(pair.1))
+        Nil
+      })
+    }
+    Error(problem) -> {
+      let _ = io.eprintln(
+        "Could not read " + problem.path + ": " + problem.message
+      )
+      Nil
+    }
+  }
+}

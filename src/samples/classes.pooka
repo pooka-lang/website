@@ -1,0 +1,28 @@
+module main
+
+class Creature {
+  let name: String
+
+  new(name: String) {
+    self.name = name
+  }
+
+  greet() -> String {
+    "..."
+  }
+}
+
+class Owl is Creature {
+  new(name: String) {
+    super.new(name)
+  }
+
+  greet() -> String {
+    "hoo"
+  }
+}
+
+main() {
+  let owl: Creature = Owl("Ada")
+  echo owl.name + " says " + owl.greet()
+}

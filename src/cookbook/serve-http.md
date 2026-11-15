@@ -1,0 +1,11 @@
+---
+title: "Serve HTTP with Cowboy"
+shelf: interop
+level: Advanced
+order: 4
+uses: ["cowboy"]
+card: "A small web server in a page of Pooka."
+draft: true
+---
+
+<!-- Write the recipe here, then remove `draft: true`. -->

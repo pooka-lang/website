@@ -1,0 +1,19 @@
+{
+  "groups": ["Start here", "The language", "Tools", "Ecosystem"],
+  "outside": [
+    {
+      "title": "A tour of Pooka",
+      "url": "/tour/",
+      "group": "The language",
+      "order": 3,
+      "summary": "The whole language in eleven chapters, from hello to actors."
+    },
+    {
+      "title": "Cookbook",
+      "url": "/cookbook/",
+      "group": "The language",
+      "order": 4,
+      "summary": "Short, complete programs for everyday tasks."
+    }
+  ]
+}

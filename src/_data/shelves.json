@@ -1,0 +1,9 @@
+{
+  "basics": { "title": "Basics", "icon": "✦", "order": 1 },
+  "text": { "title": "Strings and text", "icon": "✎", "order": 2 },
+  "collections": { "title": "Collections", "icon": "▦", "order": 3 },
+  "files": { "title": "Files and processes", "icon": "⌂", "order": 4 },
+  "actors": { "title": "Actors and concurrency", "icon": "✉", "order": 5 },
+  "interop": { "title": "Interop", "icon": "⇄", "order": 6 },
+  "testing": { "title": "Testing", "icon": "✓", "order": 7 }
+}

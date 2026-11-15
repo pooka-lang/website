@@ -1,0 +1,19 @@
+module main
+
+enum Weather {
+  Sunny,
+  Rainy,
+  Foggy
+}
+
+plan(weather: Weather) -> String {
+  match weather {
+    Weather.Sunny -> "walk to the harbour"
+    Weather.Rainy -> "write a parser"
+    Weather.Foggy -> "listen for the lighthouse"
+  }
+}
+
+main() {
+  echo plan(Weather.Rainy)
+}

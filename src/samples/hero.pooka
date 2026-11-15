@@ -1,0 +1,22 @@
+module main
+
+import pooka/io
+import pooka/list
+
+class Lantern(name: String, lit: Bool)
+
+glow(lantern: Lantern) -> String {
+  match lantern.lit {
+    True -> lantern.name + " is glowing"
+    False -> lantern.name + " waits in the dark"
+  }
+}
+
+main() {
+  [Lantern("Ada", True), Lantern("Bo", False)]
+  |> list.map(glow)
+  |> list.each(fn(line: String) {
+    let _ = io.println(line)
+    Nil
+  })
+}

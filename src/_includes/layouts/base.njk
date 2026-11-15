@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{%- set fullTitle = (title | stripTags) + " · Pooka" if title else "Pooka" %}
+{%- set summaryText = (description or summary or site.description) | stripTags %}
+<title>{{ fullTitle }}</title>
+<meta name="description" content="{{ summaryText }}">
+<meta name="theme-color" content="#211C1B">
+<link rel="canonical" href="{{ site.url }}{{ page.url }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ site.url }}{{ page.url }}">
+<meta property="og:title" content="{{ fullTitle }}">
+<meta property="og:description" content="{{ summaryText }}">
+<meta property="og:image" content="{{ site.url }}/assets/mascots/mascot-hero-lantern.png">
+<link rel="icon" href="/assets/favicon.png">
+<link rel="alternate" type="application/rss+xml" title="Pooka news" href="/feed.xml">
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/site.js" defer></script>
+{%- for script in scripts %}
+<script src="/js/{{ script }}.js" defer></script>
+{%- endfor %}
+</head>
+<body>
+{% include "partials/header.njk" %}
+<main id="main">
+{{ content | safe }}
+</main>
+{% include "partials/footer.njk" %}
+</body>
+</html>

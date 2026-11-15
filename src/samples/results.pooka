@@ -1,0 +1,21 @@
+module main
+
+import pooka/int
+
+parse_cups(text: String) -> Result(Int, String) {
+  match int.parse(text) {
+    Ok(cups) if cups > 0 -> Ok(cups)
+    Ok(_) -> Error("at least one cup, please")
+    Error(_) -> Error("`" + text + "` is not a number")
+  }
+}
+
+brew(text: String) -> Result(String, String) {
+  let cups = parse_cups(text)?
+  Ok(int.to_string(cups) + " cups brewing")
+}
+
+main() {
+  echo brew("3")
+  echo brew("lots")
+}
