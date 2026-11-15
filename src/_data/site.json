@@ -3,7 +3,7 @@
   "url": "https://pooka.run",
   "tagline": "A little magic in every line of code.",
   "description": "Pooka is a small, statically typed language for the BEAM, with classes, interfaces, enums, pattern matching, actors and Result-based errors.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "releaseNotes": "/news/pooka-0-3-0/",
   "github": "https://github.com/pooka-lang/pooka",
   "stdlibDocs": "https://hexdocs.pm/pooka_stdlib/",
