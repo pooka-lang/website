@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
@@ -47,6 +48,13 @@ export default function (eleventyConfig) {
   eleventyConfig.addPairedShortcode("terminal", (content) =>
     terminal(content.replace(/^\n/, "").replace(/\n\s*$/, ""))
   );
+
+  // {{ "/js/site.js" | asset }} adds a stamp of the file's content, so a
+  // browser never keeps running an old script or stylesheet after a change.
+  eleventyConfig.addFilter("asset", (path) => {
+    const hash = createHash("sha256").update(readFileSync(`src${path}`)).digest("hex").slice(0, 10);
+    return `${path}?v=${hash}`;
+  });
 
   // --- Filters -----------------------------------------------------------------
   eleventyConfig.addFilter("inlineCode", (text = "") =>

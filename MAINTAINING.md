@@ -44,6 +44,9 @@ Pooka code is full of braces.
 
 ## Code, output and file trees
 
+Stylesheet and script links carry a stamp of the file's content (`?v=…`), so
+browsers pick up a change straight away.
+
 Everything is coloured when the site is built, so pages need no JavaScript to
 show code.
 
