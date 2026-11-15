@@ -36,11 +36,19 @@ It should print `29`. If it prints a smaller number, the compiler may refuse to 
 
 ## 2. Install Pooka on macOS or Linux
 
+**The quick way.** One line downloads the latest Pooka, checks it against its checksum, puts it in `~/.local/bin` and adds that folder to your PATH:
+
+```sh
+curl -fsSL https://pooka.run/install.sh | sh
+```
+
+Open a new terminal afterwards. If you would rather do each step yourself, read on.
+
 **Download the compiler and its checksum.**
 
 ```sh
-curl -fLO https://github.com/pooka-lang/pooka/releases/download/v0.1.0/pooka
-curl -fLO https://github.com/pooka-lang/pooka/releases/download/v0.1.0/pooka.sha256
+curl -fLO https://github.com/pooka-lang/pooka/releases/latest/download/pooka
+curl -fLO https://github.com/pooka-lang/pooka/releases/latest/download/pooka.sha256
 ```
 
 **Check the download.** This makes sure the file arrived whole.
@@ -71,14 +79,14 @@ export PATH="$HOME/.local/bin:$PATH"
 pooka --version
 ```
 
-You should see `pooka 0.1.0`. That's it. You can [start your first project](/docs/getting-started/).
+You should see the version, such as `pooka 0.3.0`. That's it. You can [start your first project](/docs/getting-started/).
 
 ## 3. Install Pooka on Windows
 
 Windows does not know how to run a file without an extension, so we give it a small launcher.
 
 1. Create a folder for it, for example `C:\Tools\Pooka`.
-2. Download [`pooka`](https://github.com/pooka-lang/pooka/releases/download/v0.1.0/pooka) and [`pooka.sha256`](https://github.com/pooka-lang/pooka/releases/download/v0.1.0/pooka.sha256) into that folder.
+2. Download [`pooka`](https://github.com/pooka-lang/pooka/releases/latest/download/pooka) and [`pooka.sha256`](https://github.com/pooka-lang/pooka/releases/latest/download/pooka.sha256) into that folder.
 3. Check the download in PowerShell. The two hashes should be the same:
 
    ```powershell
@@ -100,7 +108,7 @@ Windows does not know how to run a file without an extension, so we give it a sm
    pooka --version
    ```
 
-You should see `pooka 0.1.0`.
+You should see the version, such as `pooka 0.3.0`.
 
 ## 4. Build Pooka from source
 

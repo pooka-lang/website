@@ -82,7 +82,7 @@ curl -fsSL https://pooka.run/install.sh | sh
 It downloads the latest `pooka` and its checksum from GitHub releases,
 refuses to install if they differ, puts `pooka` in `~/.local/bin` and adds
 that folder to PATH (zsh, bash, fish or `~/.profile`). Optional settings:
-`POOKA_VERSION=v0.2.0`, `POOKA_INSTALL_DIR=…`, `POOKA_NO_MODIFY_PATH=1`.
+`POOKA_VERSION=v0.3.0`, `POOKA_INSTALL_DIR=…`, `POOKA_NO_MODIFY_PATH=1`.
 
 ## Deploying
 

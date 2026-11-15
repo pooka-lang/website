@@ -16,6 +16,7 @@ brew(text: String) -> Result(String, String) {
 }
 
 main() {
-  echo brew("3")
-  echo brew("lots")
+  loop order in ["3", "lots"] {
+    echo brew(order)
+  }
 }

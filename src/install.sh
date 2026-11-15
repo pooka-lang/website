@@ -8,7 +8,7 @@
 # folder is on your PATH.
 #
 # Settings, all optional:
-#   POOKA_VERSION=v0.2.0         a release tag instead of the latest
+#   POOKA_VERSION=v0.3.0         a release tag instead of the latest
 #   POOKA_INSTALL_DIR=/some/bin  where to put `pooka` (default ~/.local/bin)
 #   POOKA_NO_MODIFY_PATH=1       never edit shell startup files
 #
