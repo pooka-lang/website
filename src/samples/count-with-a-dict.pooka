@@ -1,0 +1,34 @@
+module main
+
+import pooka/dict.{Dict}
+import pooka/int
+import pooka/io
+import pooka/list
+import pooka/string
+
+tally(votes: List(String)) -> Dict(String, Int) {
+  list.fold(votes, dict.empty(), fn(counts: Dict(String, Int), vote: String) {
+    counts.insert(vote, counts.get_or(vote, 0) + 1)
+  })
+}
+
+main() {
+  let votes = ["tea", "cocoa", "tea", "coffee", "tea", "cocoa"]
+  let counts = tally(votes)
+  counts.keys()
+  |> list.sort_by(string.compare)
+  |> list.each(fn(drink: String) {
+    let _ = io.println(drink + ": " + int.to_string(counts.get_or(drink, 0)))
+    Nil
+  })
+
+  let by_letter = list.group(
+    ["owl", "otter", "fox", "finch", "hare"],
+    fn(
+      animal: String
+    ) {
+      string.slice(animal, 0, 1)
+    }
+  )
+  echo by_letter.get("f")
+}

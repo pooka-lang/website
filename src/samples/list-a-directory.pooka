@@ -1,0 +1,41 @@
+module main
+
+import pooka/file.{FileError}
+import pooka/io
+import pooka/list
+import pooka/path
+import pooka/string
+
+/// Every file in `folder` with the given extension, sorted by name.
+files_with(folder: String, wanted: String) -> Result(List(String), FileError) {
+  let names = file.list_directory(folder)?
+  Ok(
+    names
+    |> list.filter(fn(name: String) { path.extension(name) == Some(wanted) })
+    |> list.sort_by(string.compare)
+  )
+}
+
+main() {
+  // A small shelf to look at.
+  let _ = file.create_directories("shelf")
+  loop name in ["moon.txt", "owl.txt", "lamp.png", "attic.txt"] {
+    let _ = file.write(path.join(["shelf", name]), "")
+  }
+
+  match files_with("shelf", ".txt") {
+    Ok(names) -> list.each(names, fn(name: String) {
+      let _ = io.println(path.stem(name))
+      Nil
+    })
+    Error(problem) -> {
+      let _ = io.eprintln(problem.message)
+      Nil
+    }
+  }
+
+  loop name in ["moon.txt", "owl.txt", "lamp.png", "attic.txt"] {
+    let _ = file.delete(path.join(["shelf", name]))
+  }
+  let _ = file.remove_directory("shelf")
+}

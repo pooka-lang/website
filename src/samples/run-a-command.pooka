@@ -1,0 +1,48 @@
+module main
+
+import pooka/int
+import pooka/io
+import pooka/process
+
+otp_version() -> Result(String, String) {
+  let script = "io:format(\"~s\", [erlang:system_info(otp_release)]), halt()."
+  match process.run("erl", ["-noshell", "-eval", script]) {
+    Ok(output) if output.status == 0 -> Ok(output.stdout)
+    Ok(output) -> Error(
+      "erl exited with status " + int.to_string(output.status)
+    )
+    Error(problem) -> Error(problem.message)
+  }
+}
+
+main() {
+  match otp_version() {
+    Ok(version) -> {
+      let _ = io.println("Erlang/OTP " + version)
+      Nil
+    }
+    Error(reason) -> {
+      let _ = io.eprintln("Could not ask Erlang: " + reason)
+      Nil
+    }
+  }
+
+  match process.run("erl", ["-noshell", "-eval", "halt(3)."]) {
+    Ok(output) -> {
+      let _ = io.println("halt(3) exits with " + int.to_string(output.status))
+      Nil
+    }
+    Error(problem) -> {
+      let _ = io.eprintln(problem.message)
+      Nil
+    }
+  }
+
+  match process.run("no-such-command", []) {
+    Ok(_) -> Nil
+    Error(problem) -> {
+      let _ = io.println("no-such-command: " + problem.message)
+      Nil
+    }
+  }
+}

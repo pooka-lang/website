@@ -1,0 +1,24 @@
+module main
+
+import pooka/int
+import pooka/io
+import pooka/list
+
+describe(guests: List(String)) -> String {
+  match guests {
+    [] -> "Nobody came. More tea for us."
+    [only] -> only + " came alone."
+    [first, second] -> first + " and " + second + " came together."
+    [first, ..rest] -> first + " came with " + int.to_string(
+      list.length(rest)
+    ) + " friends."
+  }
+}
+
+main() {
+  [[], ["Ada"], ["Ada", "Bo"], ["Ada", "Bo", "Cy", "Di"]]
+  |> list.each(fn(guests: List(String)) {
+    let _ = io.println(describe(guests))
+    Nil
+  })
+}

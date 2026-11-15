@@ -1,0 +1,21 @@
+module kettle_test
+
+import kettle
+
+test "a litre makes four cups" {
+  assert kettle.cups(1000) == 4
+}
+
+test "half a cup is not a cup" {
+  assert kettle.cups(120) == 0
+}
+
+test "pouring says how many" {
+  assert kettle.pour(500) == Ok("2 cups of tea")
+  assert kettle.pour(250) == Ok("one cup of tea")
+}
+
+test "an empty kettle explains itself" {
+  let assert Error(reason) = kettle.pour(0)
+  assert reason == "the kettle is empty"
+}

@@ -1,0 +1,43 @@
+module main
+
+import pooka/float
+import pooka/int
+import pooka/io
+import pooka/list
+
+class Summary(count: Int, total: Float, lowest: Float, highest: Float)
+
+summarise(readings: List(Float)) -> Option(Summary) {
+  match readings {
+    [] -> None
+    [first, ..] -> Some(list.fold(
+      readings,
+      Summary(0, 0.0, first, first),
+      fn(s: Summary, reading: Float) {
+        Summary(
+          s.count + 1,
+          s.total + reading,
+          float.min(s.lowest, reading),
+          float.max(s.highest, reading)
+        )
+      }
+    ))
+  }
+}
+
+main() {
+  let night = [11.5, 9.0, 7.25, 6.5, 8.75]
+  match summarise(night) {
+    Some(s) -> {
+      let _ = io.println("readings: " + int.to_string(s.count))
+      let _ = io.println("coldest:  " + float.to_string(s.lowest))
+      let _ = io.println("warmest:  " + float.to_string(s.highest))
+      let _ = io.println("average:  " + float.to_string(s.total / s.count))
+      Nil
+    }
+    None -> {
+      let _ = io.println("No readings tonight.")
+      Nil
+    }
+  }
+}

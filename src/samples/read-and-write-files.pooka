@@ -1,0 +1,34 @@
+module main
+
+import pooka/file.{FileError}
+import pooka/io
+
+keep_notes(path: String) -> Result(String, FileError) {
+  file.write(path, "Remember the kettle.\n")?
+  file.append(path, "Feed the owl.\n")?
+  let notes = file.read(path)?
+  file.delete(path)?
+  Ok(notes)
+}
+
+main() {
+  match keep_notes("notes.txt") {
+    Ok(notes) -> {
+      let _ = io.print(notes)
+      Nil
+    }
+    Error(problem) -> {
+      let _ = io.eprintln(problem.path + ": " + problem.message)
+      Nil
+    }
+  }
+  match file.read("missing.txt") {
+    Ok(_) -> Nil
+    Error(problem) -> {
+      let _ = io.println(
+        "Could not read " + problem.path + ": " + problem.message
+      )
+      Nil
+    }
+  }
+}

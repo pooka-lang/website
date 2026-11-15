@@ -1,0 +1,40 @@
+module main
+
+import pooka/int
+import pooka/io
+import pooka/list
+
+/// Adds up the squares of a range of numbers, in its own process.
+actor Worker {
+  var total: Int = 0
+
+  be sum_squares(from: Int, to: Int) {
+    // `list.range` stops before its end, so ask for one more.
+    total = list.fold(list.range(from, to + 1), 0, fn(acc: Int, n: Int) {
+      acc + n * n
+    })
+  }
+
+  result() -> Int {
+    total
+  }
+}
+
+main() {
+  // Four workers, a quarter of the numbers each.
+  let ranges = [#(1, 250000), #(250001, 500000), #(500001, 750000), #(
+    750001,
+    1000000
+  )]
+  let workers = list.map(ranges, fn(range: #(Int, Int)) {
+    let worker = Worker()
+    worker.sum_squares(range.0, range.1)
+    worker
+  })
+
+  // Asking for a result waits until that worker has done its sum.
+  let parts = list.map(workers, fn(worker: Worker) { worker.result() })
+  let total = list.fold(parts, 0, fn(acc: Int, part: Int) { acc + part })
+  let _ = io.println("parts: " + int.to_string(list.length(parts)))
+  let _ = io.println("total: " + int.to_string(total))
+}

@@ -1,0 +1,37 @@
+//// Roman numerals, for clocks and chapter headings.
+
+module roman
+
+numerals() -> List(#(Int, String)) {
+  [
+    #(1000, "M"),
+    #(900, "CM"),
+    #(500, "D"),
+    #(400, "CD"),
+    #(100, "C"),
+    #(90, "XC"),
+    #(50, "L"),
+    #(40, "XL"),
+    #(10, "X"),
+    #(9, "IX"),
+    #(5, "V"),
+    #(4, "IV"),
+    #(1, "I")
+  ]
+}
+
+/// `number` in Roman numerals. Zero and below have none.
+to_roman(number: Int) -> String {
+  write(number, numerals())
+}
+
+write(number: Int, pairs: List(#(Int, String))) -> String {
+  match pairs {
+    [] -> ""
+    [#(value, letters), ..] if number >= value -> letters + write(
+      number - value,
+      pairs
+    )
+    [_, ..rest] -> write(number, rest)
+  }
+}

@@ -1,0 +1,34 @@
+module main
+
+import pooka/env
+import pooka/io
+import pooka/process
+import pooka/string
+
+usage() -> String {
+  "usage: greet <name> [--shout]"
+}
+
+greet(arguments: List(String)) -> Result(String, String) {
+  match arguments {
+    [name] -> Ok("Hello, " + name + ".")
+    [name, "--shout"] | ["--shout", name] -> Ok(
+      string.uppercase("Hello, " + name + "!")
+    )
+    [] -> Error(usage())
+    _ -> Error("too many arguments\n" + usage())
+  }
+}
+
+main() {
+  match greet(env.args()) {
+    Ok(line) -> {
+      let _ = io.println(line)
+      Nil
+    }
+    Error(message) -> {
+      let _ = io.eprintln(message)
+      process.exit(1)
+    }
+  }
+}

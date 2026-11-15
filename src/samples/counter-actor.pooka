@@ -1,0 +1,41 @@
+module main
+
+import pooka/int
+import pooka/io
+
+actor Visitors {
+  let door: String
+  var count: Int
+
+  new(door: String) {
+    self.door = door
+    self.count = 0
+  }
+
+  be arrive() {
+    count += 1
+  }
+
+  be arrive_together(group: Int) {
+    count += group
+  }
+
+  be reset() {
+    count = 0
+  }
+
+  report() -> String {
+    int.to_string(count) + " visitors through the " + door
+  }
+}
+
+main() {
+  let front = Visitors("front door")
+  front.arrive()
+  front.arrive_together(3)
+  front.arrive()
+  let _ = io.println(front.report())
+
+  front.reset()
+  let _ = io.println(front.report())
+}

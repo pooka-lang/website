@@ -2504,3 +2504,7 @@ pre.terminal-output,
     padding-left: 44px;
   }
 }
+
+.prose .window + .window {
+  margin-top: 16px;
+}

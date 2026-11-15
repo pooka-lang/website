@@ -37,10 +37,12 @@ export default function (eleventyConfig) {
   }
 
   // --- Shortcodes ----------------------------------------------------------------
-  // {% sample "hero" %}: a tested program from src/samples, highlighted.
-  eleventyConfig.addShortcode("sample", (name) =>
-    highlight(readFileSync(`src/samples/${name}.pooka`, "utf8").replace(/\n$/, ""), "pooka")
-  );
+  // {% sample "words" %} reads src/samples/words.pooka; a sample with several
+  // files is a folder: {% sample "first-test", "test/kettle.spec.pooka" %}.
+  eleventyConfig.addShortcode("sample", (name, file) => {
+    const path = file ? `src/samples/${name}/${file}` : `src/samples/${name}.pooka`;
+    return highlight(readFileSync(path, "utf8").replace(/\n$/, ""), "pooka");
+  });
   // {% terminal %}…{% endterminal %}: CLI output, coloured like the CLI.
   eleventyConfig.addPairedShortcode("terminal", (content) =>
     terminal(content.replace(/^\n/, "").replace(/\n\s*$/, ""))

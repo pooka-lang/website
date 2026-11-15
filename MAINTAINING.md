@@ -19,7 +19,7 @@ file.
 | --- | --- | --- |
 | `src/docs/*.md` | `/docs/<file>/` | `title`, `group`, `order`, `summary`, `description`, optional `navTitle` |
 | `src/news/*.md` | `/news/<file>/` and `/feed.xml` | `title`, `date`, `kind`, `summary`, optional `listSummary`, `readingTime`, `download` |
-| `src/cookbook/*.md` | `/cookbook/<file>/` | `title`, `shelf`, `level`, `order`, `uses`, `card`, optional `summary`, `sample`, `ingredients`, `draft` |
+| `src/cookbook/*.md` | `/cookbook/<file>/` | `title`, `shelf`, `level`, `order`, `uses`, `card`, optional `summary`, `sample`, `files`, `ingredients`, `draft` |
 | `src/tour.md` | `/tour/` | `title`, `heading`, `lede` |
 
 - **Docs:** groups and their order are in `src/_data/docs.json`, which also
@@ -30,7 +30,9 @@ file.
 - **Cookbook:** `shelf` is a key of `src/_data/shelves.json`. A recipe with
   `draft: true` is listed as "coming soon" without a page; write it, then
   remove the line. `sample: words` shows `src/samples/words.pooka` as the
-  recipe's program.
+  recipe's program. A recipe with several files uses a folder,
+  `src/samples/first-test/`, and lists them: `files: [src/kettle.pooka,
+  test/kettle.spec.pooka]`.
 - **Pages:** `src/index.njk`, `src/news.njk`, `src/cookbook.njk`,
   `src/packages.njk` and `src/docs/index.njk`. Layouts and the header and
   footer are in `src/_includes/`.
@@ -55,8 +57,11 @@ show code.
 - In templates, `{% sample "hero" %}` inserts a program from `src/samples`, and
   `{% terminal %}…{% endterminal %}` colours output.
 
-The programs in `src/samples` are complete and tested. After a language
-change, check them with the installed compiler:
+The programs in `src/samples` are complete and tested. A program that wants
+arguments has a `name.args` file; one that needs packages has a `name.deps`
+file, one package per line. A folder is a small project, run with
+`pooka test` when it has tests. After a language change, check them all with
+the installed compiler; a warning counts as a failure:
 
 ```sh
 npm run check:samples

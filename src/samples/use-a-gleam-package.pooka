@@ -1,0 +1,20 @@
+module main
+
+import pooka/io
+
+external GleamString from gleam "gleam/string" {
+  reverse(text: String) -> String
+
+  capitalise(text: String) -> String
+}
+
+/// Gleam's string functions understand graphemes, so emoji and accents
+/// stay in one piece when reversed.
+mirror(text: String) -> String {
+  GleamString.reverse(text)
+}
+
+main() {
+  let _ = io.println(GleamString.capitalise("pooka meets gleam"))
+  let _ = io.println(mirror("lantern 🏮"))
+}

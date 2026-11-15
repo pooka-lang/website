@@ -1,0 +1,26 @@
+module main
+
+import pooka/io
+import pooka/list
+import pooka/string
+
+capitalise(word: String) -> String {
+  string.uppercase(string.slice(word, 0, 1)) + string.drop_start(word, 1)
+}
+
+main() {
+  let guests = "owl, fox ,  hare,,badger "
+  |> string.split(",")
+  |> list.map(string.trim)
+  |> list.filter(fn(name: String) { !string.is_empty(name) })
+  |> list.map(capitalise)
+  let _ = io.println(string.join(guests, " · "))
+
+  let line = match string.split_once("lamp = lit", "=") {
+    Some(#(key, value)) -> string.trim(key) + " is " + string.trim(value)
+    None -> "no setting here"
+  }
+  let _ = io.println(line)
+  let _ = io.println(string.pad_start("7", 3, "0") + " guests")
+  Nil
+}

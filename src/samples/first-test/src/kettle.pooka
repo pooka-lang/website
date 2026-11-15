@@ -1,0 +1,22 @@
+//// A kettle that knows how many cups it holds.
+
+module kettle
+
+import pooka/int
+
+/// Whole cups of tea in `millilitres` of water, at 250 ml a cup.
+cups(millilitres: Int) -> Int {
+  match int.divide(millilitres, 250) {
+    Ok(whole) -> whole
+    Error(_) -> 0
+  }
+}
+
+/// What to say when someone asks for tea.
+pour(millilitres: Int) -> Result(String, String) {
+  match cups(millilitres) {
+    0 -> Error("the kettle is empty")
+    1 -> Ok("one cup of tea")
+    many -> Ok(int.to_string(many) + " cups of tea")
+  }
+}

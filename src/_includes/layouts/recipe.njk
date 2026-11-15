@@ -27,7 +27,15 @@ layout: layouts/base.njk
       </ul>
     </div>
     {%- endif %}
-    {%- if sample %}
+    {%- if sample and files %}
+    <h2 id="program">The whole program</h2>
+    {%- for file in files %}
+    <div class="window">
+      <div class="window-bar"><span class="dots"><span></span><span></span><span></span></span><span class="title">{{ file }}</span></div>
+      <pre><code class="language-pooka">{% sample sample, file %}</code></pre>
+    </div>
+    {%- endfor %}
+    {%- elif sample %}
     <h2 id="program">The whole program</h2>
     <div class="window">
       <div class="window-bar"><span class="dots"><span></span><span></span><span></span></span><span class="title">src/main.pooka</span></div>

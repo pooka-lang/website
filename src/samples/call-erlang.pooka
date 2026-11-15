@@ -1,0 +1,24 @@
+module main
+
+import pooka/io
+import pooka/string
+
+external Crypto from erlang "crypto" {
+  strong_rand_bytes(count: Int) -> BitArray
+}
+
+external Binary from erlang "binary" {
+  encode_hex(bytes: BitArray) -> String
+}
+
+/// A random token, `count` bytes long, as lowercase hexadecimal.
+token(count: Int) -> String {
+  Crypto.strong_rand_bytes(count)
+  |> Binary.encode_hex
+  |> string.lowercase
+}
+
+main() {
+  let _ = io.println("session: " + token(16))
+  let _ = io.println("short:   " + token(4))
+}

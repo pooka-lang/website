@@ -1,0 +1,27 @@
+module main
+
+import pooka/int
+import pooka/io
+import pooka/list
+import pooka/string
+
+read_age(text: String) -> Result(Int, String) {
+  match int.parse(string.trim(text)) {
+    Ok(age) if age < 0 -> Error("an age cannot be negative")
+    Ok(age) if age > 150 -> Error("that is a very old owl")
+    Ok(age) -> Ok(age)
+    Error(_) -> Error("`" + text + "` is not a whole number")
+  }
+}
+
+main() {
+  ["42", " 7 ", "-3", "forty", "200"]
+  |> list.each(fn(text: String) {
+    let line = match read_age(text) {
+      Ok(age) -> "ok     " + int.to_string(age)
+      Error(reason) -> "error  " + reason
+    }
+    let _ = io.println(line)
+    Nil
+  })
+}

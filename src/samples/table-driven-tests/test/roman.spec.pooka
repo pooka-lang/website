@@ -1,0 +1,33 @@
+module roman_test
+
+import pooka/int
+import roman
+
+test "numbers become numerals" {
+  let cases = [
+    #(1, "I"),
+    #(4, "IV"),
+    #(9, "IX"),
+    #(14, "XIV"),
+    #(40, "XL"),
+    #(90, "XC"),
+    #(400, "CD"),
+    #(1987, "MCMLXXXVII"),
+    #(2026, "MMXXVI"),
+    #(3999, "MMMCMXCIX")
+  ]
+  loop case in cases {
+    let #(number, expected) = case
+    assert roman.to_roman(number) == expected as int.to_string(number) + " should be " + expected
+  }
+}
+
+test "nothing has no numeral" {
+  loop number in [0, -1, -50] {
+    assert roman.to_roman(number) == "" as int.to_string(number)
+  }
+}
+
+test skip "numbers past 3999 need a bar over them" {
+  assert roman.to_roman(5000) == "V̄"
+}
