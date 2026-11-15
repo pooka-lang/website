@@ -1,4 +1,5 @@
-// Every package on Hex built with Pooka, fetched while the site builds.
+// Every package on Hex built with Pooka, fetched while the site builds,
+// most recently updated first.
 //
 // Hex can search by build tool: `build_tool:pooka`. The response is cached
 // for an hour during local development. If Hex cannot be reached, the build
@@ -33,7 +34,7 @@ export default async function () {
   const all = [];
   try {
     for (let page = 1; page <= 20; page++) {
-      const url = `${API}?search=${encodeURIComponent(QUERY)}&sort=inserted_at&page=${page}`;
+      const url = `${API}?search=${encodeURIComponent(QUERY)}&sort=updated_at&page=${page}`;
       const batch = await Fetch(url, { duration: "1h", type: "json" });
       all.push(...batch.map(simplify));
       if (batch.length < 100) break;
@@ -42,6 +43,7 @@ export default async function () {
     console.warn(`[packages] Hex could not be reached: ${error.message}`);
     return { list: [], fetched: null, reachable: false };
   }
-  all.sort((a, b) => new Date(b.inserted) - new Date(a.inserted) || a.name.localeCompare(b.name));
+  // Most recently updated first: a new release moves a package to the top.
+  all.sort((a, b) => new Date(b.updated) - new Date(a.updated) || a.name.localeCompare(b.name));
   return { list: all, fetched: new Date().toISOString(), reachable: true };
 }

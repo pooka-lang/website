@@ -8,7 +8,7 @@
   var list = document.querySelector("[data-packages] [data-list]");
   if (!list || !window.fetch) return;
 
-  var API = "https://hex.pm/api/packages?search=" + encodeURIComponent("build_tool:pooka") + "&sort=inserted_at";
+  var API = "https://hex.pm/api/packages?search=" + encodeURIComponent("build_tool:pooka") + "&sort=updated_at";
 
   function esc(text) {
     return String(text == null ? "" : text)
@@ -37,7 +37,7 @@
       (retired ? '<span class="chip">retired</span>' : "") + "</div>" +
       "<p>" + esc(meta.description || "No description yet.") + "</p>" +
       '<div class="meta">' + (licenses.length ? "<span>" + esc(licenses.join(", ")) + "</span><span>·</span>" : "") +
-      '<span>published <time datetime="' + esc(p.inserted_at) + '">' + longDate(p.inserted_at) + "</time></span>" +
+      '<span>updated <time datetime="' + esc(p.updated_at) + '">' + longDate(p.updated_at) + "</time></span>" +
       (downloads ? "<span>·</span><span>" + downloads + " downloads</span>" : "") + "</div></div>" +
       '<div class="use"><div class="add"><code>pooka add ' + esc(p.name) + '</code><button class="copy" type="button" data-copy="pooka add ' + esc(p.name) + '">Copy</button></div>' +
       '<div class="links"><a href="' + esc(p.html_url) + '">Hex</a>' +
@@ -62,7 +62,7 @@
     .then(function (packages) {
       if (!packages.length) return;
       packages.sort(function (a, b) {
-        return new Date(b.inserted_at) - new Date(a.inserted_at) || a.name.localeCompare(b.name);
+        return new Date(b.updated_at) - new Date(a.updated_at) || a.name.localeCompare(b.name);
       });
       list.innerHTML = packages.map(row).join("");
       var total = document.querySelector("[data-total]");

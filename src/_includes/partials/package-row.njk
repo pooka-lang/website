@@ -4,7 +4,7 @@
     <p>{{ p.description }}</p>
     <div class="meta">
       {%- if p.licenses.length %}<span>{{ p.licenses | join(", ") }}</span><span>·</span>{% endif -%}
-      <span>published <time datetime="{{ p.inserted }}">{{ p.inserted | longDate }}</time></span>
+      <span>updated <time datetime="{{ p.updated }}">{{ p.updated | longDate }}</time></span>
       {%- if p.downloads %}<span>·</span><span>{{ p.downloads }} downloads</span>{% endif %}
     </div>
   </div>

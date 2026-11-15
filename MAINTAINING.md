@@ -70,7 +70,7 @@ npm run check:samples
 ## Packages
 
 `src/_data/packages.js` asks Hex for every package with the build tool
-`pooka` while the site builds, newest first. The deploy workflow rebuilds the
+`pooka` while the site builds, most recently updated first. The deploy workflow rebuilds the
 site every six hours, so new packages appear without a commit. In the browser,
 `src/js/packages.js` asks Hex again and adds anything published since the last
 build. If Hex cannot be reached at build time, the page links to hex.pm and
