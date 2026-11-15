@@ -5,6 +5,8 @@ import markdownItAnchor from "markdown-it-anchor";
 import { slug } from "github-slugger";
 import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 
+import { relativeTime } from "./src/js/relative-time.js";
+
 import { escapeHtml, highlight, languages } from "./lib/highlight.js";
 import { isTerminal, isTree, terminal, tree } from "./lib/terminal.js";
 
@@ -61,6 +63,7 @@ export default function (eleventyConfig) {
     escapeHtml(text).replace(/`([^`]+)`/g, "<code>$1</code>")
   );
   eleventyConfig.addFilter("stripTags", stripTags);
+  eleventyConfig.addFilter("relativeTime", relativeTime);
   eleventyConfig.addFilter("longDate", (date) =>
     new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
   );

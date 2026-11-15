@@ -2,11 +2,24 @@
 // asks Hex again so packages published since the last build show up too.
 // If Hex cannot be reached, the snapshot stays as it is.
 
+import { relativeTime } from "./relative-time.js";
+
 (function () {
   "use strict";
 
   var list = document.querySelector("[data-packages] [data-list]");
-  if (!list || !window.fetch) return;
+  if (!list) return;
+
+  // Update the snapshot even when Hex is unreachable, and keep an open page's
+  // labels moving without downloading the package catalog every minute.
+  function updateTimes() {
+    list.querySelectorAll("time[data-relative-time]").forEach(function (time) {
+      time.textContent = relativeTime(time.getAttribute("datetime"));
+    });
+  }
+  updateTimes();
+  window.setInterval(updateTimes, 60_000);
+  if (!window.fetch) return;
 
   var API = "https://hex.pm/api/packages?search=" + encodeURIComponent("build_tool:pooka") + "&sort=updated_at";
 
@@ -37,7 +50,7 @@
       (retired ? '<span class="chip">retired</span>' : "") + "</div>" +
       "<p>" + esc(meta.description || "No description yet.") + "</p>" +
       '<div class="meta">' + (licenses.length ? "<span>" + esc(licenses.join(", ")) + "</span><span>·</span>" : "") +
-      '<span>updated <time datetime="' + esc(p.updated_at) + '">' + longDate(p.updated_at) + "</time></span>" +
+      '<span>updated <time data-relative-time datetime="' + esc(p.updated_at) + '" title="' + esc(longDate(p.updated_at)) + '">' + relativeTime(p.updated_at) + "</time></span>" +
       (downloads ? "<span>·</span><span>" + downloads + " downloads</span>" : "") + "</div></div>" +
       '<div class="use"><div class="add"><code>pooka add ' + esc(p.name) + '</code><button class="copy" type="button" data-copy="pooka add ' + esc(p.name) + '">Copy</button></div>' +
       '<div class="links"><a href="' + esc(p.html_url) + '">Hex</a>' +

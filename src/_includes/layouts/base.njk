@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="{{ '/css/style.css' | asset }}">
 <script src="{{ '/js/site.js' | asset }}" defer></script>
 {%- for script in scripts %}
-<script src="{{ ('/js/' + script + '.js') | asset }}" defer></script>
+<script src="{{ ('/js/' + script + '.js') | asset }}" {% if script == "packages" %}type="module"{% else %}defer{% endif %}></script>
 {%- endfor %}
 </head>
 <body>
