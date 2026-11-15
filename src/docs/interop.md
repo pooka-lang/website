@@ -30,7 +30,7 @@ main() {
 }
 ```
 
-The languages are `erlang`, `elixir`, `gleam` and `lfe`. Your own foreign files go in the project's `ffi/` folder, as `.erl`, `.ex`, `.gleam` or `.lfe` files.
+The languages are `erlang`, `elixir`, `gleam` and `lfe`. Your own foreign files go in the project's `ffi/` folder, as `.erl`, `.ex`, `.gleam` or `.lfe` files. Foreign helpers used only by tests can go in `test/ffi/`; Pooka compiles these for the root project during development and excludes them from production exports and Hex packages.
 
 Pooka trusts the types you write here. Keep externals small, and wrap them in ordinary Pooka functions, so the rest of your code never has to wonder.
 

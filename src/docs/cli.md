@@ -231,7 +231,7 @@ pooka run -m tool -- init
 `-m` (or `--module`) accepts a source module path or a resolved package name. A
 package name selects that package's `main` module. To select an exact owner when
 names overlap, use `package:module`, for example `tool:main` or `app:tools/check`.
-The selected module must define a zero-argument `main()` function.
+A bare package name takes precedence over a same-named module; use `tool:tool` to choose that module explicitly. Only modules with a zero-argument `main()` are runnable choices.
 
 Arguments after `--` are passed unchanged, including options and empty arguments.
 Without `-m`, Pooka runs the current package's `src/main.pooka`. A plain `-m main`

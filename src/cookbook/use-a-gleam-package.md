@@ -33,5 +33,5 @@ Pooka meets gleam
 
 <div class="callout">
   <span class="ic" aria-hidden="true">✦</span>
-  <div><p><strong>Erlang packages</strong> from Hex work the same way: <code>pooka add</code> them and use <code>from erlang</code>. <strong>Elixir packages</strong> also work with a compiler built from current <code>main</code> after <a href="https://github.com/pooka-lang/pooka/pull/46">the Mix dependency fix</a>. Install Elixir alongside Erlang. Pooka builds them with Mix, using the dependency versions it has already resolved; it leaves the downloaded source cache alone. This support is not part of the 0.3.0 compiler release.</p></div>
+  <div><p><strong>Erlang packages</strong> from Hex work the same way: <code>pooka add</code> them and use <code>from erlang</code>. <strong>Elixir packages</strong> from Hex work with Pooka 0.3.1 and later. Install Elixir alongside Erlang. Pooka builds them with Mix, using the dependency versions it has already resolved, and leaves the downloaded source cache alone.</p></div>
 </div>
