@@ -6,7 +6,7 @@
   "version": "0.3.0",
   "releaseNotes": "/news/pooka-0-3-0/",
   "github": "https://github.com/pooka-lang/pooka",
-  "stdlibDocs": "https://pooka_stdlib.hexdocs.pm/",
+  "stdlibDocs": "https://hexdocs.pm/pooka_stdlib/",
   "install": "curl -fsSL https://pooka.run/install.sh | sh",
   "year": 2026,
   "nav": [
