@@ -10,7 +10,7 @@ layout: layouts/base.njk
       <a href="/news/">← News</a>
       <span class="chip chip-{{ kind }}">{{ kinds[kind] }}</span>
       <time datetime="{{ page.date | isoDate }}">{{ page.date | longDate }}</time>
-      {%- if readingTime %}<span>·</span><span>{{ readingTime }}</span>{% endif %}
+      {%- if readingTime %}<span class="sep">·</span><span>{{ readingTime }}</span>{% endif %}
     </div>
     <h1>{{ title }}</h1>
     <p class="lede">{{ summary | inlineCode | safe }}</p>

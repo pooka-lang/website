@@ -1452,7 +1452,7 @@ a.card:hover,
 
 .article-layout {
   display: grid;
-  grid-template-columns: minmax(0, 720px) 1fr;
+  grid-template-columns: minmax(0, 720px) minmax(0, 1fr);
   gap: 64px;
   padding: 48px 0 96px;
 }
@@ -1589,10 +1589,27 @@ a.card:hover,
 
 @media (max-width: 960px) {
   .article-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 32px 0 64px;
   }
 
-  .toc {
+  /* On narrow screens the outline goes, but a download button stays. */
+  .article-layout .toc {
+    position: static;
+    order: -1;
+  }
+
+  .article-layout .toc h4,
+  .article-layout .toc ol {
+    display: none;
+  }
+
+  .article-layout .toc:not(:has(.btn)) {
+    display: none;
+  }
+
+  .docs-layout .toc {
     display: none;
   }
 }
@@ -2425,4 +2442,65 @@ pre.terminal-output,
 .prose .ingredients h4 {
   font-size: 0.78rem;
   margin-top: 0;
+}
+
+/* ------------------------------------------------- Articles on small screens */
+
+.prose {
+  overflow-wrap: break-word;
+}
+
+.prose :not(pre) > code,
+.ingredients code,
+.lede code {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .article-head {
+    padding: 40px 0 28px;
+  }
+
+  .article-head h1 {
+    font-size: 2rem;
+  }
+
+  .article-head .lede {
+    font-size: 1.08rem;
+  }
+
+  .prose {
+    font-size: 1rem;
+  }
+
+  .prose h2 {
+    font-size: 1.4rem;
+  }
+
+  .prose pre.code,
+  .prose .window pre {
+    font-size: 0.78rem;
+    padding: 14px 16px;
+  }
+
+  .pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pager .next {
+    grid-column: auto;
+    text-align: left;
+  }
+
+  .article-head .meta {
+    gap: 8px 12px;
+  }
+
+  .article-head .meta .sep {
+    display: none;
+  }
+
+  .recipe-steps > li {
+    padding-left: 44px;
+  }
 }
