@@ -13,6 +13,7 @@ import { isTerminal, isTree, terminal, tree } from "./lib/terminal.js";
 /** A fenced code block, coloured at build time. */
 function codeBlock(source, lang = "") {
   const code = source.replace(/\n$/, "");
+  if (lang === "snapshot") return `<pre class="code terminal-output"><code>${terminal(source.replace(/\n$/, ""))}</code></pre>\n`;
   if (lang === "text" || lang === "") {
     if (isTerminal(code)) return `<pre class="code terminal-output"><code>${terminal(code)}</code></pre>\n`;
     if (isTree(code)) return `<pre class="code file-tree"><code>${tree(code)}</code></pre>\n`;

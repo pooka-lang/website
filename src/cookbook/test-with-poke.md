@@ -76,7 +76,7 @@ Suppose the label changes to `To: Little Owl`. Run the tests to stage the new
 result, then open the reviewer again. Its diff puts the accepted text above the
 candidate (the terminal width controls the length of the rules):
 
-```text
+```snapshot
   Reviewing 1 out of 1
 
   ── mismatched snapshots ──────────────────────────

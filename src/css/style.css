@@ -2508,3 +2508,7 @@ pre.terminal-output,
 .prose .window + .window {
   margin-top: 16px;
 }
+
+/* Snapshot diffs use the reviewer’s conventional red and green. */
+.t-diff-remove { color: #e06c75; }
+.t-diff-add { color: #98c379; }
