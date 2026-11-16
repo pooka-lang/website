@@ -29,7 +29,22 @@
       value = target ? target.textContent : "";
     }
     copyText(button, value.trim());
+    countCopy(value.trim());
   });
+
+  // GoatCounter events for copied commands: the install line, and which
+  // packages people add. Nothing else is sent, and nothing at all when
+  // GoatCounter is not loaded (local previews).
+  function countCopy(text) {
+    if (!window.goatcounter || !window.goatcounter.count) return;
+    var name = null;
+    if (/install\.sh/.test(text)) name = "copy/install";
+    else {
+      var add = /^pooka add ([a-z0-9_]+)$/.exec(text);
+      if (add) name = "copy/pooka-add/" + add[1];
+    }
+    if (name) window.goatcounter.count({ path: name, title: text, event: true });
+  }
 
   // ------------------------------------------------------------------ Nav
 

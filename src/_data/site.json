@@ -10,10 +10,26 @@
   "install": "curl -fsSL https://pooka.run/install.sh | sh",
   "year": 2026,
   "nav": [
-    { "label": "Tour", "url": "/tour/" },
-    { "label": "Docs", "url": "/docs/" },
-    { "label": "Cookbook", "url": "/cookbook/" },
-    { "label": "Packages", "url": "/packages/" },
-    { "label": "News", "url": "/news/" }
-  ]
+    {
+      "label": "Tour",
+      "url": "/tour/"
+    },
+    {
+      "label": "Docs",
+      "url": "/docs/"
+    },
+    {
+      "label": "Cookbook",
+      "url": "/cookbook/"
+    },
+    {
+      "label": "Packages",
+      "url": "/packages/"
+    },
+    {
+      "label": "News",
+      "url": "/news/"
+    }
+  ],
+  "analytics": "https://pooka.goatcounter.com/count"
 }

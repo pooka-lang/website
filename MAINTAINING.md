@@ -92,6 +92,23 @@ refuses to install if they differ, puts `pooka` in `~/.local/bin` and adds
 that folder to PATH (zsh, bash, fish or `~/.profile`). Optional settings:
 `POOKA_VERSION=v0.3.0`, `POOKA_INSTALL_DIR=…`, `POOKA_NO_MODIFY_PATH=1`.
 
+## Analytics
+
+[GoatCounter](https://pooka.goatcounter.com): no cookies and no personal
+data, so no consent banner. The script is added only to deployed builds
+(`npm run build`), never to `npm start`, and GoatCounter ignores localhost
+anyway. `src/js/site.js` also counts two events: copying the install command
+(`copy/install`) and copying `pooka add <package>` (`copy/pooka-add/<package>`).
+The address is `analytics` in `src/_data/site.json`; remove it to turn
+analytics off.
+
+Installs via `curl … | sh` run no JavaScript, so they never appear here.
+GitHub counts release downloads instead:
+
+```sh
+gh api repos/pooka-lang/pooka/releases --jq '.[] | "\(.tag_name): \(.assets[] | select(.name=="pooka") | .download_count)"'
+```
+
 ## Deploying
 
 `.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every
