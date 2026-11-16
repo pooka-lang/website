@@ -1,0 +1,56 @@
+module main
+
+import pooka/int
+import pooka/io
+import pooka/otp.{Key, LogLevel}
+import pooka/otp/supervisor.{Strategy}
+
+/// A kettle keeps count of the cups it has poured, until it cracks.
+actor Kettle {
+  var cups: Int = 0
+
+  be pour(count: Int) {
+    cups += count
+  }
+
+  be crack() {
+    panic as "the kettle cracked"
+  }
+
+  poured() -> Int {
+    cups
+  }
+}
+
+say(line: String) -> Nil {
+  let _ = io.println(line)
+  Nil
+}
+
+main() {
+  // OTP reports every crash in detail. Keep this example's output short.
+  otp.set_log_level(LogLevel.Critical)
+
+  // Where the supervisor keeps the newest kettle, across restarts.
+  let kettles: Key(Kettle) = otp.key("kettle")
+  let children = [
+    supervisor.actor_child("kettle", kettles, fn() { Kettle() })
+  ]
+  let assert Ok(tree) = supervisor.start(
+    supervisor.spec(Strategy.OneForOne, children)
+  )
+
+  let assert Some(kettle) = otp.get(kettles)
+  kettle.pour(3)
+  say("poured " + int.to_string(kettle.poured()) + " cups")
+
+  kettle.crack()
+  otp.sleep(100)
+
+  let assert Some(new_kettle) = otp.get(kettles)
+  say("a new kettle has poured " + int.to_string(new_kettle.poured()) + " cups")
+  new_kettle.pour(1)
+  say("and now " + int.to_string(new_kettle.poured()))
+
+  supervisor.shutdown(tree)
+}
