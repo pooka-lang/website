@@ -1,0 +1,33 @@
+module parcel_test
+
+import parcel
+import poke/should
+import poke/generator
+import poke/property
+import poke/snapshot
+
+test "three parcels at 250 cost 750" {
+  should.equal(parcel.total(3, 250), 750)
+}
+
+test "labels keep a name and explain when it is missing" {
+  parcel.label("  Owl  ") |> should.be_ok() |> should.equal("To: Owl")
+  parcel.label(" ") |> should.be_error() |> should.equal("missing name")
+}
+
+test "combining orders preserves their total" {
+  property.for_all(
+    generator.pair(generator.integers(0, 100), generator.integers(0, 100)),
+    fn(orders) {
+      should.equal(
+        parcel.total(orders.0 + orders.1, 250),
+        parcel.total(orders.0, 250) + parcel.total(orders.1, 250)
+      )
+    }
+  )
+}
+
+test "the parcel label stays familiar" {
+  let label = parcel.label("  Owl  ") |> should.be_ok()
+  snapshot.snap(label + "\n", "parcel-label")
+}

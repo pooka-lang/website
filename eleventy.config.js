@@ -26,6 +26,8 @@ function codeBlock(source, lang = "") {
 const stripTags = (html = "") => html.replace(/<[^>]+>/g, "");
 
 export default function (eleventyConfig) {
+  eleventyConfig.ignores.add("src/samples/**/build/**");
+  eleventyConfig.ignores.add("src/samples/**/.lexie/**");
   // --- Markdown ------------------------------------------------------------
   const md = markdownIt({ html: true, typographer: false, highlight: codeBlock });
   // GitHub-style heading ids, so links such as #1-install-erlang keep working.

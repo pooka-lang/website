@@ -1,0 +1,9 @@
+name = "tiny_lexer"
+version = "1.0.0"
+
+[dependencies]
+pooka_stdlib = ">= 0.3.1 and < 1.0.0"
+
+[dev-dependencies]
+poke = ">= 1.0.0 and < 2.0.0"
+lexie = { git = "https://github.com/peregrinefinch/lexie", tag = "v1.0.0" }

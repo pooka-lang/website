@@ -1,0 +1,15 @@
+module parcel
+
+import pooka/string
+
+total(items: Int, price: Int) -> Int {
+  items * price
+}
+
+label(name: String) -> Result(String, String) {
+  let name = string.trim(name)
+  match name {
+    "" -> Error("missing name")
+    _ -> Ok("To: " + name)
+  }
+}

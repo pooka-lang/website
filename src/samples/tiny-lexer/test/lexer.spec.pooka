@@ -1,0 +1,24 @@
+module lexer_test
+
+import tiny_lexer/scanner/lexer
+import tiny_lexer/scanner/token
+import tiny_lexer/scanner/location.{Position}
+import poke/should
+import pooka/list
+
+test "a binding has tokens and an exact source position" {
+  let found = lexer.lex("let answer = 42")
+  should.equal(
+    list.map(found, fn(lexeme) { lexeme.token }),
+    [
+      token.Let(),
+      token.Ident("answer"),
+      token.Equal(),
+      token.IntLiteral("42"),
+      token.End()
+    ]
+  )
+  let answer = list.at(found, 1) |> should.be_some()
+  should.equal(answer.span.start, Position(1, 5, 4))
+  should.equal(answer.span.end, Position(1, 11, 10))
+}

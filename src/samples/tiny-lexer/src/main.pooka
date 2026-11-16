@@ -1,0 +1,12 @@
+module main
+
+import tiny_lexer/scanner/lexer
+import tiny_lexer/scanner/location.{Location}
+import pooka/list
+
+main() {
+  let found = lexer.lex("let answer = 42")
+  echo list.map(found, fn(lexeme) {
+    #(lexeme.token, Location("input.tiny", lexeme.span).format())
+  })
+}
