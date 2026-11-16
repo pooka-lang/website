@@ -1,0 +1,26 @@
+module main
+
+import pooka/io
+
+/// From Elixir: the `slugify` package.
+external Slug from elixir "Slug" {
+  slugify(text: String) -> String
+}
+
+/// From Gleam: the standard library's string functions.
+external GleamString from gleam "gleam/string" {
+  reverse(text: String) -> String
+
+  capitalise(text: String) -> String
+}
+
+/// A web address for a page title.
+slug(title: String) -> String {
+  Slug.slugify(title)
+}
+
+main() {
+  let _ = io.println(slug("A Lantern in the Night Library!"))
+  let _ = io.println(GleamString.capitalise("pooka meets gleam"))
+  let _ = io.println(GleamString.reverse("lantern 🏮"))
+}
