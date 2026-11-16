@@ -18,7 +18,7 @@ ingredients:
 ## Give the language its words
 
 ```sh
-pooka add lexie --git https://github.com/peregrinefinch/lexie --tag v1.0.0 --dev
+pooka add lexie --dev
 pooka add poke --dev
 pooka run -m lexie init
 ```
@@ -79,5 +79,5 @@ checks both the token sequence and the identifier's start and end positions.
 
 Use `location-info = false` when only token values are needed. The explicit
 `lex_with_locations` entry point remains available for tools that need spans.
-See the [Lexie guide](https://github.com/peregrinefinch/lexie/blob/v1.0.0/docs/guide.md) for strings, comments,
+See the [Lexie guide](https://lexie.hexdocs.pm/guide.html) for strings, comments,
 number formats and semantic highlighting.

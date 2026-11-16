@@ -5,15 +5,13 @@ version = 1
 pooka_stdlib = ">= 0.3.1 and < 1.0.0"
 
 [dev-requirements]
-lexie = { git = "https://github.com/peregrinefinch/lexie", tag = "v1.0.0" }
+lexie = ">= 1.0.0 and < 2.0.0"
 poke = ">= 1.0.0 and < 2.0.0"
 
 [[packages]]
 name = "lexie"
 version = "1.0.0"
-git = "https://github.com/peregrinefinch/lexie"
-reference = "tag:v1.0.0"
-revision = "878f8b5b6cf4602520cf738cd87e05306dfed622"
+checksum = "d60b63a3e390c4b2bed55917b42a4bc4bb7cccd4a8b3be91fd57f04c1e54f3a7"
 dependencies = ["pooka_stdlib", "tome"]
 requirements = { pooka_stdlib = ">= 0.3.1 and < 1.0.0", tome = ">= 1.0.0 and < 2.0.0" }
 
