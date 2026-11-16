@@ -225,7 +225,7 @@ A development dependency may provide its own `src/main.pooka`, independently of
 the application's entry point. Keep it pinned in `pooka.lock` and run it with:
 
 ```sh
-pooka run -m tool -- init
+pooka run -m tool init
 ```
 
 `-m` (or `--module`) accepts a source module path or a resolved package name. A
@@ -233,7 +233,7 @@ package name selects that package's `main` module. To select an exact owner when
 names overlap, use `package:module`, for example `tool:main` or `app:tools/check`.
 A bare package name takes precedence over a same-named module; use `tool:tool` to choose that module explicitly. Only modules with a zero-argument `main()` are runnable choices.
 
-Arguments after `--` are passed unchanged, including options and empty arguments.
+Since Pooka 0.3.2, every argument after `-m <target>` goes to the selected program, including its `--help` and other options. A leading `--` still works for existing scripts. Without `-m`, use `--` before your program’s arguments.
 Without `-m`, Pooka runs the current package's `src/main.pooka`. A plain `-m main`
 also refers to the current package's entry point. Another package's main module
 is private to that package and cannot be imported as an ordinary dependency API.
