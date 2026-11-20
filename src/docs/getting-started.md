@@ -9,6 +9,8 @@ Tonight we are going to make a small project, run it, test it, tidy it, and teac
 
 You will need Pooka installed. If `pooka --version` does not answer yet, the [installation guide](/docs/install/) will get you there.
 
+For syntax highlighting, see [Editor support](/docs/editor-support/) for Zed, VS Code, Neovim and Emacs.
+
 ## 1. Create a project
 
 ```sh
