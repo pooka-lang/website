@@ -1,0 +1,2 @@
+.prose table { display:block; overflow-x:auto; }
+.tok-operator,.tok-bracket,.tok-delimiter { color:var(--code-punct); }

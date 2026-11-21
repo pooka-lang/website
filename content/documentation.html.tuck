@@ -1,0 +1,37 @@
+---
+layout = "base"
+title = "Documentation"
+description = "Guides for installing, learning and using Pooka."
+permalink = "/docs/"
+---
+<section class="page-head">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Documentation</span>
+      <h1>Everything, <em>by lantern light</em>.</h1>
+      <p>New here? <a href="/docs/install/">Install Pooka</a>, then follow <a href="/docs/getting-started/">Getting started</a>. When you're ready for the whole language, take <a href="/tour/">the tour</a>.</p>
+    </div>
+    <img class="mascot" src="/assets/mascots/mascot-exploring.png" alt="" width="200">
+  </div>
+</section>
+<section class="section-tight">
+  <div class="wrap">
+    {%- for group_name in data.docs.groups %}
+    <section class="shelf">
+      <div class="shelf-head"><h2>{{ group_name }}</h2></div>
+      <div class="cards">
+        {%- for entry in collections.guides | concat(data.docs.outside) | where("group", group_name) | sort_by("order") %}
+        <a class="card" href="{{ entry.url }}"><h3>{{ entry.navTitle | default(entry.title) }}</h3><p>{{ entry.summary | inline_code | safe }}</p></a>
+        {%- endfor %}
+      </div>
+    </section>
+    {%- endfor %}
+    <div class="notice">
+      <img src="/assets/mascots/mascot-curious.png" alt="">
+      <div>
+        <h3>Looking for an API?</h3>
+        <p>The standard library's modules and functions are documented on <a href="{{ site.params.stdlibDocs }}">HexDocs</a>. Every package's API is generated with <code>pooka docs</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>

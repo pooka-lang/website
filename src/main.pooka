@@ -1,0 +1,9 @@
+module main
+
+import jinks
+import jinks/provider.{Provider}
+import catalogue
+
+main() {
+  jinks.main_with([Provider("packages", catalogue.load)])
+}

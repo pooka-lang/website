@@ -1,0 +1,52 @@
+---
+layout = "base"
+title = "News"
+description = "Releases, guides and stories from the Pooka community."
+permalink = "/news/"
+---
+<section class="page-head">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">News</span>
+      <h1>Notes from the <em>burrow</em>.</h1>
+      <p>Releases, guides and the occasional story. Follow along with the <a href="/feed.xml">RSS feed</a>.</p>
+    </div>
+    <img class="mascot" src="/assets/mascots/mascot-exploring.png" alt="" width="200">
+  </div>
+</section>
+
+<section class="section-tight" data-filter-root>
+  <div class="wrap">
+    {%- set used = collections.posts | distinct("news_kind") %}
+    {%- if (used | length) > 1 %}
+    <div class="toolbar">
+      <div class="filters" role="group" aria-label="Filter by kind">
+        <button type="button" data-filter-tag="all" aria-pressed="true">All</button>
+        {%- for kind, label in data.kinds %}{% if kind in used %}
+        <button type="button" data-filter-tag="{{ kind }}" aria-pressed="false">{{ label }}s</button>
+        {%- endif %}{% endfor %}
+      </div>
+      <span class="result-count" data-filter-count="post,posts" aria-live="polite"></span>
+    </div>
+    {%- endif %}
+
+    <div class="posts">
+      {%- for post in collections.posts | reverse %}
+      <a class="post-item{% if loop.first %} featured{% endif %}" href="{{ post.url }}" data-tags="{{ post.news_kind }}">
+        <time datetime="{{ post.date | date("%Y-%m-%d") }}">{{ post.date | short_date }}</time>
+        <div>
+          <span class="chip chip-{{ post.news_kind }}">{{ data.kinds[post.news_kind] }}</span>
+          <h2>{{ post.title }}</h2>
+          <p>{{ (post.listSummary | default(post.summary)) | inline_code | safe }}</p>
+        </div>
+        <span class="arrow">Read →</span>
+      </a>
+      {%- endfor %}
+    </div>
+
+    <div class="empty" data-filter-empty hidden>
+      <img src="/assets/mascots/mascot-curious.png" alt="">
+      <p>Nothing here yet.</p>
+    </div>
+  </div>
+</section>

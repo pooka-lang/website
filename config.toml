@@ -1,0 +1,53 @@
+title = "Pooka"
+base-url = "https://pooka.run"
+theme = "pooka"
+output-dir = "public"
+
+[server]
+port = 4175
+
+[params]
+tagline = "A little magic in every line of code."
+description = "Pooka is a small, statically typed language for the BEAM, with classes, interfaces, enums, pattern matching, actors and Result-based errors."
+version = "0.3.3"
+releaseNotes = "https://github.com/pooka-lang/pooka/releases/tag/v0.3.3"
+github = "https://github.com/pooka-lang/pooka"
+stdlibDocs = "https://hexdocs.pm/pooka_stdlib/"
+install = "curl -fsSL https://pooka.run/install.sh | sh"
+year = 2026
+nav = [{ "label" = "Tour", "url" = "/tour/" }, { "label" = "Docs", "url" = "/docs/" }, { "label" = "Cookbook", "url" = "/cookbook/" }, { "label" = "Packages", "url" = "/packages/" }, { "label" = "News", "url" = "/news/" }]
+analytics = "https://pooka.goatcounter.com/count"
+author = "The Pooka team"
+
+[collections.guides]
+path = "docs"
+sort = "order"
+[collections.guides.defaults]
+layout = "doc"
+
+[collections.recipes]
+path = "cookbook"
+sort = "order"
+[collections.recipes.defaults]
+layout = "recipe"
+
+[collections.posts]
+path = "news"
+sort = "date"
+direction = "ascending"
+[collections.posts.defaults]
+layout = "post"
+
+[publishing]
+feed = true
+feed-format = "rss"
+feed-limit = 20
+feed-title = "Pooka news"
+feed-description = "Releases, guides and stories from the Pooka community."
+collection = "posts"
+sitemap = true
+search = true
+robots = true
+
+[markdown]
+raw-html = true

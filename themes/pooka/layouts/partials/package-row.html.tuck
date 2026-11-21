@@ -1,0 +1,15 @@
+<article class="package-row">
+  <div class="about">
+    <div class="name"><h3><a href="{{ p.hex }}">{{ p.name }}</a></h3><span class="version">v{{ p.version }}</span>{% if p.retired %}<span class="chip">retired</span>{% endif %}</div>
+    <p>{{ p.description }}</p>
+    <div class="meta">
+      {%- if (p.licenses | length) %}<span>{{ p.licenses | join(", ") }}</span><span>·</span>{% endif -%}
+      <span>updated <time data-relative-time datetime="{{ p.updated }}" title="{{ p.updated_title }}">{{ p.updated_label }}</time></span>
+      {%- if p.downloads %}<span>·</span><span>{{ p.downloads }} downloads</span>{% endif %}
+    </div>
+  </div>
+  <div class="use">
+    <div class="add"><code>pooka add {{ p.name }}</code><button class="copy" type="button" data-copy="pooka add {{ p.name }}">Copy</button></div>
+    <div class="links"><a href="{{ p.hex }}">Hex</a>{% if p.docs %}<a href="{{ p.docs }}">Docs</a>{% endif %}{% if p.repo %}<a href="{{ p.repo }}">Source</a>{% endif %}</div>
+  </div>
+</article>

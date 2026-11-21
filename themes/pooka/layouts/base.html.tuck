@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {%- set summaryText = (description | default(summary) | default(site.params.description)) | strip_tags %}
+  <title>{% if title %}{{ title | strip_tags }} · Pooka{% else %}Pooka{% endif %}</title>
+  <meta name="description" content="{{ summaryText }}">
+  <meta name="theme-color" content="#211C1B">
+  <link rel="canonical" href="{{ site.base_url }}{{ page.url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ site.base_url }}{{ page.url }}">
+  <meta property="og:title" content="{% if title %}{{ title | strip_tags }} · Pooka{% else %}Pooka{% endif %}">
+  <meta property="og:description" content="{{ summaryText }}">
+  <meta property="og:image" content="{{ site.base_url }}/assets/mascots/mascot-hero-lantern.png">
+  <link rel="icon" href="/assets/logos/logo-mark.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Pooka news" href="/feed.xml">
+  <link rel="stylesheet" href="{{ '/css/style.css' | asset }}">
+  <link rel="stylesheet" href="{{ '/css/nook.css' | asset }}">
+  <script src="{{ '/js/site.js' | asset }}" defer></script>
+  {%- if site.params.analytics and build.production %}
+    <script data-goatcounter="{{ site.params.analytics }}" async src="https://gc.zgo.at/count.js"></script>
+  {%- endif %}
+  {% if scripts %}
+    {%- for script in scripts %}
+      <script src="{{ script | asset }}" {% if script == "/js/packages.js" %}type="module"{% else %}defer{% endif %}></script>
+    {%- endfor %}
+  {% endif %}
+</head>
+<body>
+  {% include "partials/header.html.tuck" %}
+  <main id="main">
+    {% block body %}{{ content | safe }}{% endblock %}
+  </main>
+  {% include "partials/footer.html.tuck" %}
+</body>
+</html>
