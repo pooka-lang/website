@@ -1033,7 +1033,52 @@ main() {
 
 A class has to say `with Glowing` out loud. Having a method called `glow` by coincidence is not enough. As the compiler puts it, a matching silhouette is not a signed agreement.
 
-Interfaces can be generic, like `interface Reader(a) { read() -> a }`, and a class may make several promises at once: `class Lamp with Glowing, Switchable`. A class can extend a parent and keep promises in the same breath: `class Owl is Creature with Glowing`. Actors can keep promises too.
+The function `shine` asks for a capability, rather than a particular class. Both values keep their own implementation: the firefly still blinks, and the moon still knows its phase. Passing a value through an interface does not copy it or replace its methods.
+
+Through a `Glowing` parameter, you can call the methods declared by `Glowing`. The concrete class may have more methods or fields, but those are not part of this promise. This keeps `shine` independent of the classes that happen to call it today.
+
+### Generic interfaces
+
+Some promises carry a type with them. A `Reader(String)` produces text; a `Reader(Int)` produces an integer. The compiler keeps that distinction at every call:
+
+```pooka
+module main
+
+interface Reader(a) {
+  read() -> a
+}
+
+class Note(a) with Reader(a) {
+  let value: a
+
+  new(value: a) {
+    self.value = value
+  }
+
+  read() -> a {
+    value
+  }
+}
+
+read_text(reader: Reader(String)) -> String {
+  reader.read()
+}
+
+main() {
+  assert read_text(Note("a note under the door")) == "a note under the door"
+  echo read_text(Note("hello"))
+}
+```
+
+`Note` stores a value of type `a` and returns that same type from `read`. `read_text` accepts any declared implementation of `Reader(String)`. A `Note(42)` cannot be passed there: keeping a different promise is still different.
+
+An interface lists required method signatures. It does not supply a default implementation, and you do not construct it with `Reader(...)`. Construct a class or actor that implements it instead.
+
+### Several promises, one value
+
+A class may declare several interfaces: `class Lamp with Glowing, Switchable`. It must implement every required method with a compatible signature. A class can also extend a parent while implementing interfaces: `class Owl is Creature with Glowing`.
+
+Use interfaces at the boundary where callers should be free to bring another implementation. Keep the concrete type where its extra operations are useful. Actors can implement the same interfaces as classes; we will give one a thermometer in the next chapter.
 
 ### Closed families, open promises
 
@@ -1088,7 +1133,9 @@ So the rule of thumb is:
 
 Everything so far has been immutable. Values are made, passed around, and never changed. This is restful, but the world does change. Kettles boil. Lamps are switched on.
 
-On the BEAM, changing things live inside processes: small, separate workers, each with its own mailbox. In Pooka, those workers are called actors.
+On the BEAM, changing things live inside processes: small, separate workers, each with its own mailbox. A Pooka actor gives one of those workers a typed front door. Its state belongs to that process.
+
+### A behaviour sends; a method asks
 
 ```pooka
 module main
@@ -1117,11 +1164,47 @@ main() {
 - `var` fields can change, but only inside the actor. Nobody else can reach in and touch them.
 - `be` declares a behaviour. Calling it drops a message in the mailbox and returns `Nil` straight away, without waiting.
 - An ordinary method, like `poured()`, is a request. The caller waits for an answer.
-- Messages are handled one at a time, in the order they were sent. So `poured()` sees both pours, and two callers can never tangle the same field.
+- The actor handles one message at a time. Messages from the **same sender** keep their sending order, so this call to `poured()` follows both pours. Messages from different callers can interleave; there is no single sending order across the whole program.
+
+The example prints `3`. A behaviour returns `Nil`; that tells the caller the send is done, not that the actor has finished handling it. The ordinary method waits for its answer.
 
 > An actor is a small room with one occupant and a letterbox. You cannot go in. You can only write.
 
-Actors can have constructors, keep promises with `with`, and hold ordinary `let` fields too:
+### A reference to a process
+
+Calling `Kettle()` twice starts two actors with independent state. Binding an existing kettle to another name keeps a reference to the same actor:
+
+```pooka
+module main
+
+actor Counter {
+  var total: Int = 0
+
+  be add(amount: Int) {
+    total += amount
+  }
+
+  value() -> Int {
+    total
+  }
+}
+
+main() {
+  let first = Counter()
+  let same = first
+  let second = Counter()
+  same.add(3)
+  assert first.value() == 3
+  assert second.value() == 0
+  echo #(first.value(), second.value())
+}
+```
+
+Passing `first` to another function or actor shares that reference. It does not make a new counter. Callers use behaviours and methods; they do not reach into the actor's mutable fields.
+
+### Constructors and fixed fields
+
+A constructor gives each new actor its initial state. Use `let` for fields that stay fixed and `var` for fields that change:
 
 ```pooka
 module main
@@ -1153,6 +1236,66 @@ main() {
   echo lamp.status()
 }
 ```
+
+
+### Actors can keep interfaces
+
+An interface describes what a caller can ask for. It does not require every implementation to store its state in the same way. One temperature sensor can be an immutable class; another can be a process receiving updates:
+
+```pooka
+module main
+
+interface Temperature {
+  read() -> Result(Float, String)
+}
+
+class FixedSensor(celsius: Float) with Temperature {
+  read() -> Result(Float, String) {
+    Ok(celsius)
+  }
+}
+
+actor Probe with Temperature {
+  var celsius: Float
+
+  new(initial: Float) {
+    self.celsius = initial
+  }
+
+  be update(value: Float) {
+    celsius = value
+  }
+
+  read() -> Result(Float, String) {
+    Ok(celsius)
+  }
+}
+
+measure(sensor: Temperature) -> Result(Float, String) {
+  sensor.read()
+}
+
+main() {
+  let fixed = FixedSensor(18.5)
+  let probe = Probe(20.0)
+  probe.update(21.0)
+  assert measure(fixed) == Ok(18.5)
+  assert measure(probe) == Ok(21.0)
+  echo #(measure(fixed), measure(probe))
+}
+```
+
+`measure` uses the same `Temperature` promise for both. The fixed sensor runs its method as an ordinary class call. The probe handles the request in its own process, and the caller waits for the reply. The interface keeps the return type checked in both cases.
+
+This is a useful boundary for interchangeable devices, test doubles and services. Keep the concrete `Probe` reference when you need `update`; a `Temperature` value exposes only `read`.
+
+### Waiting, failures and supervision
+
+Actors are small processes, not free background threads for every expression. While a handler is running, that actor cannot handle its next message. Keep long waits out of a busy actor, and be careful with synchronous calls that can form a cycle.
+
+Native actor method calls currently have no configurable timeout. If the actor exits before replying, the call fails; an application-level `Result` does not automatically catch a process exit. Use [the OTP library](https://pooka-otp.hexdocs.pm/) when you need explicit monitors, bounded typed requests and supervision. The cookbook has a complete [supervised worker example](/cookbook/supervise-a-worker/).
+
+Choose a class for an ordinary immutable value. Choose an actor when independent state and a mailbox are part of the job. The kettle needs somewhere to keep its count; the number `3` does not need its own room.
 
 ---
 

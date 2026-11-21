@@ -1,0 +1,23 @@
+module main
+
+actor Counter {
+  var total: Int = 0
+
+  be add(amount: Int) {
+    total += amount
+  }
+
+  value() -> Int {
+    total
+  }
+}
+
+main() {
+  let first = Counter()
+  let same = first
+  let second = Counter()
+  same.add(3)
+  assert first.value() == 3
+  assert second.value() == 0
+  echo #(first.value(), second.value())
+}

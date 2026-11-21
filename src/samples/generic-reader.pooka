@@ -1,0 +1,26 @@
+module main
+
+interface Reader(a) {
+  read() -> a
+}
+
+class Note(a) with Reader(a) {
+  let value: a
+
+  new(value: a) {
+    self.value = value
+  }
+
+  read() -> a {
+    value
+  }
+}
+
+read_text(reader: Reader(String)) -> String {
+  reader.read()
+}
+
+main() {
+  assert read_text(Note("a note under the door")) == "a note under the door"
+  echo read_text(Note("hello"))
+}
