@@ -3,6 +3,6 @@ version = "1.0.0"
 [dependencies]
 pooka_stdlib = ">= 0.4.0 and < 1.0.0"
 pooka_json = ">= 1.0.0 and < 2.0.0"
-jinks = { git = "https://github.com/peregrinefinch/jinks.git", rev = "a5778d077d7198f619671568d8a9252455c5e7dd" }
+jinks = { git = "https://github.com/peregrinefinch/jinks.git", rev = "22194716211e05f661a31d57e5ee3dea2cf456f3" }
 [dev-dependencies]
 poke = ">= 1.0.0 and < 2.0.0"
