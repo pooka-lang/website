@@ -1,0 +1,38 @@
+---
+layout = "base"
+title = "Packages"
+description = "Every package on Hex built with Pooka, most recently updated first."
+permalink = "/packages/"
+scripts = ["/js/packages.js"]
+---
+{%- set count = (data.packages.list | length) %}
+<section class="page-head">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Packages</span>
+      <h1>The <em>burrow</em> of packages.</h1>
+      <p><strong class="total" data-total>{% if data.packages.reachable %}{{ count }}{% else %}All{% endif %}</strong> <span data-total-noun>package{% if count != 1 %}s{% endif %}</span> on <a href="https://hex.pm">Hex</a> built with Pooka.</p>
+    </div>
+    <img class="mascot" src="/assets/mascots/mascot-curious.png" alt="" width="200">
+  </div>
+</section>
+
+<section class="section-tight" data-packages>
+  <div class="wrap">
+    <div class="package-list" data-list>
+      {%- for p in data.packages.list %}
+      {% include "partials/package-row.html.tuck" %}
+      {%- else %}
+      <div class="empty"><img src="/assets/mascots/mascot-curious.png" alt=""><p>Browse <a href="https://hex.pm/packages?search=build_tool%3Apooka">Pooka packages on hex.pm</a>.</p></div>
+      {%- endfor %}
+    </div>
+
+    <div class="notice" style="margin-top:48px">
+      <img src="/assets/mascots/mascot-waving.png" alt="">
+      <div>
+        <h3>Publish yours</h3>
+        <p>Packages published with <code>pooka publish</code> appear here automatically. The <a href="/docs/publishing/">publishing guide</a> walks through it.</p>
+      </div>
+    </div>
+  </div>
+</section>

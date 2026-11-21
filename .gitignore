@@ -1,4 +1,7 @@
-node_modules/
-_site/
-.cache/
+/build/
+/public/
+/.jinks/
+/.jinks-build.lock
+/.jinks-stage-*
+/.jinks-backup-*
 .DS_Store

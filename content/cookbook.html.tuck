@@ -1,0 +1,88 @@
+---
+layout = "base"
+title = "Cookbook"
+description = "Short, complete Pooka programs for everyday tasks, from text and collections to actors and interop."
+permalink = "/cookbook/"
+---
+<section class="page-head">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Cookbook</span>
+      <h1>Small recipes, <em>warm</em> from the oven.</h1>
+      <p>Short, complete programs for everyday tasks. Copy one, run it, change it.</p>
+    </div>
+    <img class="mascot" src="/assets/mascots/mascot-coding.png" alt="" width="200">
+  </div>
+</section>
+
+<section class="section-tight" data-filter-root>
+  <div class="wrap">
+    <div class="toolbar">
+      <label class="search">
+        <span class="visually-hidden">Search recipes</span>
+        <input
+          type="search"
+          placeholder="Search recipes, e.g. dict, file, actor"
+          data-filter-search
+          autocomplete="off"
+        >
+        <kbd>/</kbd>
+      </label>
+      <span class="result-count" data-filter-count="recipe,recipes" aria-live="polite"></span>
+    </div>
+    <div class="toolbar">
+      <div class="filters" role="group" aria-label="Filter by topic">
+        <button type="button" data-filter-tag="all" aria-pressed="true">All</button>
+        {%- for key, shelf in data.shelves %}
+        <button type="button" data-filter-tag="{{ key }}" aria-pressed="false">{{ shelf.title }}</button>
+        {%- endfor %}
+      </div>
+    </div>
+
+    {%- for key, shelf in data.shelves %}
+    {%- set recipes = collections.recipes | concat(data.coming_soon) | where("shelf", key) | sort_by("order") %}
+    {%- if (recipes | length) %}
+    <section class="shelf" id="{{ key }}" data-group>
+      <div class="shelf-head"><span class="emoji" aria-hidden="true">{{ shelf.icon }}</span><h2>{{ shelf.title }}</h2><span class="count">{{ (recipes | length) }} recipe{% if (recipes | length) != 1 %}s{% endif %}</span></div>
+      <div class="cards">
+        {%- for recipe in recipes %}
+
+        {%- if recipe.draft %}
+        <div
+          class="card recipe-card is-draft"
+          data-tags="{{ key }}"
+          data-text="{{ recipe.title | lower | strip_tags }} {{ (recipe.card | default(recipe.summary)) | lower | strip_tags }} {{ recipe.uses | join(" ") | lower }}"
+        >
+        {%- else %}
+        <a
+          class="card recipe-card"
+          href="{{ recipe.url }}"
+          data-tags="{{ key }}"
+          data-text="{{ recipe.title | lower | strip_tags }} {{ (recipe.card | default(recipe.summary)) | lower | strip_tags }} {{ recipe.uses | join(" ") | lower }}"
+        >
+        {%- endif %}
+          <span class="level">{{ recipe.level }}{% if recipe.draft %} · <span class="soon">Coming soon</span>{% endif %}</span>
+          <h3>{{ recipe.title }}</h3>
+          <p>{{ (recipe.card | default(recipe.summary)) | inline_code | safe }}</p>
+          <div class="uses">{% for use in recipe.uses %}<code>{{ use }}</code>{% endfor %}</div>
+        {%- if recipe.draft %}</div>{% else %}</a>{% endif %}
+        {%- endfor %}
+      </div>
+    </section>
+    {%- endif %}
+    {%- endfor %}
+
+    <div class="empty" data-filter-empty hidden>
+      <img src="/assets/mascots/mascot-curious.png" alt="">
+      <p>No recipe for that yet. <a href="{{ site.params.github }}/issues">Ask for one</a>, or write it yourself.</p>
+    </div>
+
+    <div class="notice">
+      <img src="/assets/mascots/mascot-happy.png" alt="">
+      <div>
+        <h3>Have a recipe to share?</h3>
+        <p>A recipe is one Markdown file in <code>src/cookbook/</code> with one complete program that compiles with the current release. Send it as a pull request.</p>
+      </div>
+    </div>
+  </div>
+</section>

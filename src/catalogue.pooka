@@ -1,0 +1,258 @@
+//// Fetch a bounded catalogue once, then let the browser keep it fresh.
+//// Tests bring their own clock and replies; templates never call the network.
+module catalogue
+
+import jinks/cache
+import jinks/date
+import jinks/fetch
+import jinks/helpers
+import jinks/provider.{Context}
+import pooka/int
+import pooka/json.{Json}
+import pooka/list
+import pooka/order.{Order}
+import pooka/string
+import pooka/uri
+
+external _Calendar from erlang "calendar" {
+  date_to_gregorian_days(day: #(Int, Int, Int)) -> Int
+}
+
+load(context: Context) -> Result(Json, String) {
+  load_with(context, fn(url) { fetch.json(url, 3000, 2621440) })
+}
+
+/// The cache stores raw records; labels are recomputed with this build's clock.
+load_with(context: Context, get: fn(String) -> Result(Json, String)) -> Result(
+  Json,
+  String
+) {
+  let now = epoch(context.timestamp)?
+  let cached = cache.get(context.root, "hex-packages", now * 1000)?
+  match cached {
+    Some(json.JArray(records)) -> Ok(catalogue(records, now, context.timestamp))
+    _ -> match pages(get, 1, []) {
+      Ok(records) -> {
+        let _ = cache.put(
+          context.root,
+          "hex-packages",
+          now * 1000,
+          3600000,
+          json.JArray(records)
+        )
+        Ok(catalogue(records, now, context.timestamp))
+      }
+      Error(_) -> Ok(json.JObject([
+        #("list", json.JArray([])),
+        #("reachable", json.JBool(False)),
+        #("fetched", json.JNull())
+      ]))
+    }
+  }
+}
+
+pages(get: fn(String) -> Result(Json, String), number: Int, found: List(Json)) -> Result(
+  List(Json),
+  String
+) {
+  match number > 20 {
+    True -> Ok(found)
+    False -> {
+      let reply = get(
+        "https://hex.pm/api/packages?search=build_tool%3Apooka&sort=updated_at&page=" + int.to_string(
+          number
+        )
+      )?
+      match reply {
+        json.JArray(batch) -> {
+          let all = list.concat(found, batch)
+          match list.length(batch) < 100 {
+            True -> Ok(all)
+            False -> pages(get, number + 1, all)
+          }
+        }
+        _ -> Error("Hex catalogue response must be an array")
+      }
+    }
+  }
+}
+
+text(value: Json, key: String, fallback: String) -> String {
+  match json.get(value, key) {
+    Some(json.JString(value)) -> value
+    _ -> fallback
+  }
+}
+
+url(value: String) -> Json {
+  match uri.parse(value) {
+    Ok(address) if (
+      address.scheme == Some("https") || address.scheme == Some("http")
+    ) && address.host != None && address.userinfo == None -> json.JString(value)
+    _ -> json.JNull()
+  }
+}
+
+simplify(record: Json, now: Int) -> Option(Json) {
+  let name = text(record, "name", "")
+  match name == "" {
+    True -> None
+    False -> {
+      let meta = match json.get(record, "meta") {
+        Some(value) -> value
+        None -> json.JNull()
+      }
+      let links = match json.get(meta, "links") {
+        Some(json.JObject(links)) -> links
+        _ -> []
+      }
+      let source = list.find(links, fn(entry) {
+        let key = string.lowercase(entry.0)
+        list.any(["repo", "source", "github", "gitlab", "codeberg"], fn(part) {
+          string.contains(key, part)
+        })
+      })
+      let source = match source {
+        Some(#(_, json.JString(link))) -> url(link)
+        _ -> json.JNull()
+      }
+      let updated = text(record, "updated_at", "")
+      let title = match helpers.format_date(string.slice(updated, 0, 10), False) {
+        Ok(day) -> day
+        Error(_) -> "Unknown date"
+      }
+      let downloads = match json.get(record, "downloads") {
+        Some(downloads) -> match json.get(downloads, "all") {
+          Some(json.JInt(n)) -> n
+          _ -> 0
+        }
+        _ -> 0
+      }
+      let licences = match json.get(meta, "licenses") {
+        Some(json.JArray(values)) -> list.filter(values, fn(value) {
+          match value {
+            json.JString(_) -> True
+            _ -> False
+          }
+        })
+        _ -> []
+      }
+      let retired = match json.get(record, "retirements") {
+        Some(json.JObject(values)) -> !list.is_empty(values)
+        _ -> False
+      }
+      Some(json.JObject([
+        #("name", json.JString(name)),
+        #(
+          "version",
+          json.JString(
+            text(
+              record,
+              "latest_stable_version",
+              text(record, "latest_version", "")
+            )
+          )
+        ),
+        #(
+          "description",
+          json.JString(text(meta, "description", "No description yet."))
+        ),
+        #("licenses", json.JArray(licences)),
+        #(
+          "hex",
+          url(text(record, "html_url", "https://hex.pm/packages/" + name))
+        ),
+        #("docs", url(text(record, "docs_html_url", ""))),
+        #("repo", source),
+        #("updated", json.JString(updated)),
+        #("updated_title", json.JString(title)),
+        #("updated_label", json.JString(relative(updated, now))),
+        #("inserted", json.JString(text(record, "inserted_at", ""))),
+        #("downloads", json.JInt(downloads)),
+        #("retired", json.JBool(retired))
+      ]))
+    }
+  }
+}
+
+catalogue(records: List(Json), now: Int, stamp: String) -> Json {
+  let records = list.filter_map(records, fn(record) { simplify(record, now) })
+  let unique = list.fold(records, [], fn(found: List(Json), record) {
+    match list.any(found, fn(old) {
+      text(old, "name", "") == text(record, "name", "")
+    }) {
+      True -> found
+      False -> list.append(found, record)
+    }
+  })
+  let sorted = list.sort_by(unique, fn(left, right) {
+    match string.compare(text(right, "updated", ""), text(left, "updated", "")) {
+      Order.Equal -> string.compare(
+        text(left, "name", ""),
+        text(right, "name", "")
+      )
+      order -> order
+    }
+  })
+  json.JObject([
+    #("list", json.JArray(sorted)),
+    #("reachable", json.JBool(True)),
+    #("fetched", json.JString(stamp))
+  ])
+}
+
+/// Hex writes UTC timestamps. Fractions affect neither minute labels nor TTLs.
+epoch(stamp: String) -> Result(Int, String) {
+  let _ = match string.ends_with(stamp, "Z") && string.length(stamp) >= 20 {
+    True -> Ok(Nil)
+    False -> Error("expected a UTC timestamp")
+  }?
+  let stamp = string.slice(stamp, 0, 19) + "Z"
+  let _ = date.validate_timestamp(stamp)?
+  let day = date.parse(string.slice(stamp, 0, 10))?
+  let year = date.number(day.year)?
+  let month = date.number(day.month)?
+  let written = date.number(day.day)?
+  let hour = date.number(string.slice(stamp, 11, 2))?
+  let minute = date.number(string.slice(stamp, 14, 2))?
+  let second = date.number(string.slice(stamp, 17, 2))?
+  Ok(
+    (
+      _Calendar.date_to_gregorian_days(#(year, month, written)) - _Calendar.date_to_gregorian_days(
+        #(1970, 1, 1)
+      )
+    ) * 86400 + hour * 3600 + minute * 60 + second
+  )
+}
+
+relative(stamp: String, now: Int) -> String {
+  match epoch(stamp) {
+    Error(_) -> "unknown date"
+    Ok(then) -> age(
+      int.max(0, now - then),
+      [
+        #("year", 31536000),
+        #("month", 2592000),
+        #("day", 86400),
+        #("hour", 3600),
+        #("minute", 60)
+      ]
+    )
+  }
+}
+
+age(seconds: Int, units: List(#(String, Int))) -> String {
+  match units {
+    [] -> "just now"
+    [#(name, size), ..rest] -> match seconds >= size {
+      True -> {
+        let assert Ok(count) = int.divide(seconds, size)
+        int.to_string(count) + " " + name + match count == 1 {
+          True -> " ago"
+          False -> "s ago"
+        }
+      }
+      False -> age(seconds, rest)
+    }
+  }
+}

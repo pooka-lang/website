@@ -1,8 +1,8 @@
 #!/bin/sh
-# Compile and run every program in src/samples with the installed `pooka`,
+# Compile and run every program in samples with the installed `pooka`,
 # so the code on the site is code that works, without warnings.
 #
-#   npm run check:samples
+#   ./scripts/check-samples.sh
 #
 # - name.pooka            runs as src/main.pooka
 # - name.args             arguments to pass, if the program wants some
@@ -12,7 +12,7 @@
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-samples="$root/src/samples"
+samples="$root/samples"
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
 status=0

@@ -1,0 +1,96 @@
+module catalogue_test
+
+import catalogue
+import jinks/provider.{Context}
+import poke/should
+import pooka/file
+import pooka/int
+import pooka/json
+import pooka/list
+import pooka/process
+
+context(name: String) -> Context {
+  let root = "build/catalogue-tests/" + int.to_string(process.pid()) + "/" + name
+  let _ = should.be_ok(file.create_directories(root))
+  Context(root, "2026-11-21T00:00:00Z")
+}
+
+record(name: String, updated: String) -> json.Json {
+  json.JObject([
+    #("name", json.JString(name)),
+    #("updated_at", json.JString(updated)),
+    #("latest_stable_version", json.JString("1.0.0")),
+    #("meta", json.JObject([#("description", json.JString("A small package"))]))
+  ])
+}
+
+test "cache reuses recorded responses without asking the network twice" {
+  let selected = context("cache")
+  let first = should.be_ok(catalogue.load_with(selected, fn(_) {
+    Ok(json.JArray([record("owl", "2026-11-20T00:00:00Z")]))
+  }))
+  let again = should.be_ok(catalogue.load_with(selected, fn(_) {
+    panic as "cache hit should not fetch"
+  }))
+  should.equal(first, again)
+  should.equal(json.get(first, "reachable"), Some(json.JBool(True)))
+}
+
+test "failed and malformed responses keep the page buildable" {
+  let failed = should.be_ok(catalogue.load_with(context("offline"), fn(_) {
+    Error("offline")
+  }))
+  should.equal(json.get(failed, "reachable"), Some(json.JBool(False)))
+  should.equal(json.get(failed, "list"), Some(json.JArray([])))
+  let malformed = should.be_ok(catalogue.load_with(context("malformed"), fn(_) {
+    Ok(json.JObject([]))
+  }))
+  should.equal(json.get(malformed, "reachable"), Some(json.JBool(False)))
+}
+
+test "pagination joins batches and removes duplicates before stable sorting" {
+  let batch = list.index_map(list.repeat(Nil, 100), fn(_, n) {
+    record("package_" + int.to_string(n), "2026-11-20T00:00:00Z")
+  })
+  let selected = should.be_ok(catalogue.load_with(context("pages"), fn(url) {
+    match url {
+      "https://hex.pm/api/packages?search=build_tool%3Apooka&sort=updated_at&page=1" -> Ok(
+        json.JArray(batch)
+      )
+      "https://hex.pm/api/packages?search=build_tool%3Apooka&sort=updated_at&page=2" -> Ok(
+        json.JArray(
+          [
+            record("package_0", "2026-11-20T00:00:00Z"),
+            record("newest", "2026-11-21T00:00:00Z")
+          ]
+        )
+      )
+      _ -> panic as "unexpected pagination request"
+    }
+  }))
+  let assert Some(json.JArray(items)) = json.get(selected, "list")
+  should.equal(list.length(items), 101)
+  let assert Some(first) = list.first(items)
+  should.equal(json.get(first, "name"), Some(json.JString("newest")))
+}
+
+test "package links accept only web URLs without credentials" {
+  should.equal(catalogue.url("javascript:alert(1)"), json.JNull())
+  should.equal(catalogue.url("https://user:secret@example.org/"), json.JNull())
+  should.equal(
+    catalogue.url("https://example.org/source"),
+    json.JString("https://example.org/source")
+  )
+}
+
+test "relative times use the same minute hour day month and year boundaries as the browser" {
+  let now = should.be_ok(catalogue.epoch("2026-11-21T00:00:00Z"))
+  should.equal(catalogue.relative("2026-11-21T00:00:01Z", now), "just now")
+  should.equal(catalogue.relative("2026-11-20T23:59:00Z", now), "1 minute ago")
+  should.equal(catalogue.relative("2026-11-20T22:00:00Z", now), "2 hours ago")
+  should.equal(catalogue.relative("2026-11-19T00:00:00Z", now), "2 days ago")
+  should.equal(catalogue.relative("2026-10-21T00:00:00Z", now), "1 month ago")
+  should.equal(catalogue.relative("2025-11-21T00:00:00Z", now), "1 year ago")
+  should.equal(catalogue.relative("not a date", now), "unknown date")
+  should.equal(catalogue.epoch("1970-01-01T00:00:00.000Z"), Ok(0))
+}

@@ -1,0 +1,44 @@
+{% extends "base.html.tuck" %}
+{% block body %}
+
+
+
+<header class="article-head">
+  <div class="wrap">
+    <div class="meta">
+      <a href="/news/">← News</a>
+      <span class="chip chip-{{ news_kind }}">{{ data.kinds[news_kind] }}</span>
+      <time datetime="{{ page.date | date("%Y-%m-%d") }}">{{ page.date | long_date }}</time>
+      {%- if readingTime %}<span class="sep">·</span><span>{{ readingTime }}</span>{% endif %}
+    </div>
+    <h1>{{ title }}</h1>
+    <p class="lede">{{ summary | inline_code | safe }}</p>
+    <div class="byline">
+      <img src="/assets/logos/logo-mark.svg" alt="">
+      <div><strong>{{ author | default("The Pooka team") }}</strong><br><span class="muted">{{ authorRole | default(data.kinds[news_kind]) }}</span></div>
+    </div>
+  </div>
+</header>
+<div class="wrap article-layout">
+  <article class="prose">
+{{ content | safe }}
+    <nav class="pager" aria-label="More news">
+      {%- if page.next %}<a href="{{ page.next.url }}"><small>Newer</small><strong>← {{ page.next.title }}</strong></a>{% endif %}
+      {%- if page.previous %}<a class="next" href="{{ page.previous.url }}"><small>Older</small><strong>{{ page.previous.title }} →</strong></a>{% endif %}
+    </nav>
+  </article>
+  <aside class="toc" aria-label="On this page">
+    {%- set headings = page.outline | where("level", 2) %}
+    {%- if (headings | length) %}
+    <h4>On this page</h4>
+    <ol>
+      {%- for heading in headings %}
+      <li><a href="#{{ heading.id }}">{{ heading.text }}</a></li>
+      {%- endfor %}
+    </ol>
+    {%- endif %}
+    {%- if download %}<a class="btn btn-dark btn-small" href="{{ download.url }}">{{ download.label }}</a>{% endif %}
+  </aside>
+</div>
+
+{% endblock %}
