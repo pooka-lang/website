@@ -5,14 +5,12 @@ version = 1
 pooka_stdlib = ">= 0.4.1 and < 1.0.0"
 
 [dev-requirements]
-poke = { git = "https://github.com/peregrinefinch/poke.git", rev = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5" }
+poke = ">= 1.1.0 and < 2.0.0"
 
 [[packages]]
 name = "poke"
-version = "1.0.0"
-git = "https://github.com/peregrinefinch/poke.git"
-reference = "rev:91ef891395ed3308d820bfa22e3b2dba4c39ecc5"
-revision = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5"
+version = "1.1.0"
+checksum = "5beb6084527f99a4a19c3351523b401615919f4b1b17f821ca9d4fb47dee2aa4"
 dependencies = ["pooka_stdlib"]
 requirements = { pooka_stdlib = ">= 0.4.1 and < 1.0.0" }
 

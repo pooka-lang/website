@@ -6,21 +6,19 @@ pooka_stdlib = ">= 0.4.1 and < 1.0.0"
 
 [dev-requirements]
 lexie = ">= 1.0.0 and < 2.0.0"
-poke = { git = "https://github.com/peregrinefinch/poke.git", rev = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5" }
+poke = ">= 1.1.0 and < 2.0.0"
 
 [[packages]]
 name = "lexie"
-version = "1.0.0"
-checksum = "d60b63a3e390c4b2bed55917b42a4bc4bb7cccd4a8b3be91fd57f04c1e54f3a7"
+version = "1.1.0"
+checksum = "2d07cfcfcbcc6566c5f80255b5c2a8c5baadafd80bd4b802d925b61e0f180ad0"
 dependencies = ["pooka_stdlib", "tome"]
 requirements = { pooka_stdlib = ">= 0.3.1 and < 1.0.0", tome = ">= 1.0.0 and < 2.0.0" }
 
 [[packages]]
 name = "poke"
-version = "1.0.0"
-git = "https://github.com/peregrinefinch/poke.git"
-reference = "rev:91ef891395ed3308d820bfa22e3b2dba4c39ecc5"
-revision = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5"
+version = "1.1.0"
+checksum = "5beb6084527f99a4a19c3351523b401615919f4b1b17f821ca9d4fb47dee2aa4"
 dependencies = ["pooka_stdlib"]
 requirements = { pooka_stdlib = ">= 0.4.1 and < 1.0.0" }
 

@@ -2,12 +2,12 @@
 version = 1
 
 [requirements]
-jinks = { git = "https://github.com/peregrinefinch/jinks.git", rev = "b01dd12444f8fd0877ca309aa8a37c928fb8365c" }
+jinks = ">= 1.1.0 and < 2.0.0"
 pooka_json = ">= 1.0.0 and < 2.0.0"
 pooka_stdlib = ">= 0.4.1 and < 1.0.0"
 
 [dev-requirements]
-poke = { git = "https://github.com/peregrinefinch/poke.git", rev = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5" }
+poke = ">= 1.1.0 and < 2.0.0"
 
 [[packages]]
 name = "arglet"
@@ -18,26 +18,22 @@ requirements = { pooka_stdlib = ">= 0.2.0 and < 1.0.0" }
 
 [[packages]]
 name = "jinks"
-version = "1.0.0"
-git = "https://github.com/peregrinefinch/jinks.git"
-reference = "rev:b01dd12444f8fd0877ca309aa8a37c928fb8365c"
-revision = "b01dd12444f8fd0877ca309aa8a37c928fb8365c"
+version = "1.1.0"
+checksum = "2e78140dd4bf4cb48873e42b45731abefdf97d5816d43218d4f91e52aef934ac"
 dependencies = ["arglet", "marksy", "pooka_json", "pooka_stdlib", "tome", "tuck"]
 requirements = { arglet = ">= 1.0.0 and < 2.0.0", marksy = ">= 1.0.0 and < 2.0.0", pooka_json = ">= 1.0.0 and < 2.0.0", pooka_stdlib = ">= 0.4.1 and < 1.0.0", tome = ">= 1.0.0 and < 2.0.0", tuck = ">= 1.0.0 and < 2.0.0" }
 
 [[packages]]
 name = "marksy"
-version = "1.0.0"
-checksum = "c1a9dc91122e787c4d4c1f8bebbb15bd431eb4cb163deb7fba7e6407c657a539"
+version = "1.1.0"
+checksum = "3f4fe413ed49be675fffa306871adc6eabfd2ea1de5a8ac47672fd844158486a"
 dependencies = ["pooka_stdlib", "tome"]
 requirements = { pooka_stdlib = ">= 0.3.1 and < 1.0.0", tome = ">= 1.0.0 and < 2.0.0" }
 
 [[packages]]
 name = "poke"
-version = "1.0.0"
-git = "https://github.com/peregrinefinch/poke.git"
-reference = "rev:91ef891395ed3308d820bfa22e3b2dba4c39ecc5"
-revision = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5"
+version = "1.1.0"
+checksum = "5beb6084527f99a4a19c3351523b401615919f4b1b17f821ca9d4fb47dee2aa4"
 dependencies = ["pooka_stdlib"]
 requirements = { pooka_stdlib = ">= 0.4.1 and < 1.0.0" }
 
@@ -64,7 +60,7 @@ requirements = { pooka_stdlib = ">= 0.3.0 and < 1.0.0" }
 
 [[packages]]
 name = "tuck"
-version = "1.0.0"
-checksum = "ec56fac50b1877d0baac040530fb7d8b3d7fb626a78c955ae78d2af116ff2ebd"
+version = "1.1.0"
+checksum = "23112ec7a0dad8b3bbfbd0855edf823de49aba6799b2ccdd76bb51c5f4d2e9cb"
 dependencies = ["pooka_json", "pooka_stdlib"]
 requirements = { pooka_json = ">= 1.0.0 and < 2.0.0", pooka_stdlib = ">= 0.3.1 and < 1.0.0" }

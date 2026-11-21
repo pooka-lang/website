@@ -16,7 +16,7 @@ permalink = "/cookbook/test-with-poke/"
 ## Add Poke
 
 ```sh
-pooka add poke --dev --git https://github.com/peregrinefinch/poke.git --rev 91ef891395ed3308d820bfa22e3b2dba4c39ecc5
+pooka add poke --dev
 pooka test
 ```
 
