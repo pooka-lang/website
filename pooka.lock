@@ -2,7 +2,7 @@
 version = 1
 
 [requirements]
-jinks = { git = "https://github.com/peregrinefinch/jinks.git", rev = "a5778d077d7198f619671568d8a9252455c5e7dd" }
+jinks = { git = "https://github.com/peregrinefinch/jinks.git", rev = "22194716211e05f661a31d57e5ee3dea2cf456f3" }
 pooka_json = ">= 1.0.0 and < 2.0.0"
 pooka_stdlib = ">= 0.4.0 and < 1.0.0"
 
@@ -20,8 +20,8 @@ requirements = { pooka_stdlib = ">= 0.2.0 and < 1.0.0" }
 name = "jinks"
 version = "1.0.0"
 git = "https://github.com/peregrinefinch/jinks.git"
-reference = "rev:a5778d077d7198f619671568d8a9252455c5e7dd"
-revision = "a5778d077d7198f619671568d8a9252455c5e7dd"
+reference = "rev:22194716211e05f661a31d57e5ee3dea2cf456f3"
+revision = "22194716211e05f661a31d57e5ee3dea2cf456f3"
 dependencies = ["arglet", "marksy", "pooka_json", "pooka_stdlib", "tome", "tuck"]
 requirements = { arglet = ">= 1.0.0 and < 2.0.0", marksy = ">= 1.0.0 and < 2.0.0", pooka_json = ">= 1.0.0 and < 2.0.0", pooka_stdlib = ">= 0.3.1 and < 1.0.0", tome = ">= 1.0.0 and < 2.0.0", tuck = ">= 1.0.0 and < 2.0.0" }
 
