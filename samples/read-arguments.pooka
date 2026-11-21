@@ -23,11 +23,11 @@ greet(arguments: List(String)) -> Result(String, String) {
 main() {
   match greet(env.args()) {
     Ok(line) -> {
-      let _ = io.println(line)
+      io.println(line)
       Nil
     }
     Error(message) -> {
-      let _ = io.eprintln(message)
+      io.eprintln(message)
       process.exit(1)
     }
   }

@@ -23,7 +23,7 @@ actor Kettle {
 }
 
 say(line: String) -> Nil {
-  let _ = io.println(line)
+  io.println(line)
   Nil
 }
 

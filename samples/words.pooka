@@ -32,12 +32,12 @@ main() {
       })
       |> list.take(3)
       |> list.each(fn(pair: #(String, Int)) {
-        let _ = io.println(pair.0 + ": " + int.to_string(pair.1))
+        io.println(pair.0 + ": " + int.to_string(pair.1))
         Nil
       })
     }
     Error(problem) -> {
-      let _ = io.eprintln(
+      io.eprintln(
         "Could not read " + problem.path + ": " + problem.message
       )
       Nil

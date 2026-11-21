@@ -34,8 +34,8 @@ main() {
   front.arrive()
   front.arrive_together(3)
   front.arrive()
-  let _ = io.println(front.report())
+  io.println(front.report())
 
   front.reset()
-  let _ = io.println(front.report())
+  io.println(front.report())
 }

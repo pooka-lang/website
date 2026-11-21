@@ -19,6 +19,6 @@ token(count: Int) -> String {
 }
 
 main() {
-  let _ = io.println("session: " + token(16))
-  let _ = io.println("short:   " + token(4))
+  io.println("session: " + token(16))
+  io.println("short:   " + token(4))
 }

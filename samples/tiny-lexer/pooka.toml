@@ -2,8 +2,8 @@ name = "tiny_lexer"
 version = "1.0.0"
 
 [dependencies]
-pooka_stdlib = ">= 0.3.1 and < 1.0.0"
+pooka_stdlib = ">= 0.4.1 and < 1.0.0"
 
 [dev-dependencies]
-poke = ">= 1.0.0 and < 2.0.0"
+poke = { git = "https://github.com/peregrinefinch/poke.git", rev = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5" }
 lexie = ">= 1.0.0 and < 2.0.0"

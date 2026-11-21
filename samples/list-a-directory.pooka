@@ -25,11 +25,11 @@ main() {
 
   match files_with("shelf", ".txt") {
     Ok(names) -> list.each(names, fn(name: String) {
-      let _ = io.println(path.stem(name))
+      io.println(path.stem(name))
       Nil
     })
     Error(problem) -> {
-      let _ = io.eprintln(problem.message)
+      io.eprintln(problem.message)
       Nil
     }
   }

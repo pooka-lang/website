@@ -2,21 +2,23 @@
 version = 1
 
 [requirements]
-pooka_stdlib = ">= 0.3.1 and < 1.0.0"
+pooka_stdlib = ">= 0.4.1 and < 1.0.0"
 
 [dev-requirements]
-poke = ">= 1.0.0 and < 2.0.0"
+poke = { git = "https://github.com/peregrinefinch/poke.git", rev = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5" }
 
 [[packages]]
 name = "poke"
 version = "1.0.0"
-checksum = "4b39940158e7c53c003d6fa1d3ff40292c920041f45ccff15e143a7d8c13a680"
+git = "https://github.com/peregrinefinch/poke.git"
+reference = "rev:91ef891395ed3308d820bfa22e3b2dba4c39ecc5"
+revision = "91ef891395ed3308d820bfa22e3b2dba4c39ecc5"
 dependencies = ["pooka_stdlib"]
-requirements = { pooka_stdlib = ">= 0.3.1 and < 1.0.0" }
+requirements = { pooka_stdlib = ">= 0.4.1 and < 1.0.0" }
 
 [[packages]]
 name = "pooka_stdlib"
-version = "0.3.1"
-checksum = "07d145f8f3c5fc52c50b1ec01476229f203507ea24c22a0c20e0754256a554fe"
+version = "0.4.1"
+checksum = "a8f4a922ed20336ec6e6a146759f42b6133cded43cc53b3893baf016a74e63c7"
 dependencies = []
 requirements = {  }

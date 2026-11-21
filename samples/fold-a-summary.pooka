@@ -29,14 +29,14 @@ main() {
   let night = [11.5, 9.0, 7.25, 6.5, 8.75]
   match summarise(night) {
     Some(s) -> {
-      let _ = io.println("readings: " + int.to_string(s.count))
-      let _ = io.println("coldest:  " + float.to_string(s.lowest))
-      let _ = io.println("warmest:  " + float.to_string(s.highest))
-      let _ = io.println("average:  " + float.to_string(s.total / s.count))
+      io.println("readings: " + int.to_string(s.count))
+      io.println("coldest:  " + float.to_string(s.lowest))
+      io.println("warmest:  " + float.to_string(s.highest))
+      io.println("average:  " + float.to_string(s.total / s.count))
       Nil
     }
     None -> {
-      let _ = io.println("No readings tonight.")
+      io.println("No readings tonight.")
       Nil
     }
   }

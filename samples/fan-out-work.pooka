@@ -35,6 +35,6 @@ main() {
   // Asking for a result waits until that worker has done its sum.
   let parts = list.map(workers, fn(worker: Worker) { worker.result() })
   let total = list.fold(parts, 0, fn(acc: Int, part: Int) { acc + part })
-  let _ = io.println("parts: " + int.to_string(list.length(parts)))
-  let _ = io.println("total: " + int.to_string(total))
+  io.println("parts: " + int.to_string(list.length(parts)))
+  io.println("total: " + int.to_string(total))
 }

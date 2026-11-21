@@ -16,7 +16,7 @@ main() {
   [Lantern("Ada", True), Lantern("Bo", False)]
   |> list.map(glow)
   |> list.each(fn(line: String) {
-    let _ = io.println(line)
+    io.println(line)
     Nil
   })
 }

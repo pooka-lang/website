@@ -18,22 +18,22 @@ otp_version() -> Result(String, String) {
 main() {
   match otp_version() {
     Ok(version) -> {
-      let _ = io.println("Erlang/OTP " + version)
+      io.println("Erlang/OTP " + version)
       Nil
     }
     Error(reason) -> {
-      let _ = io.eprintln("Could not ask Erlang: " + reason)
+      io.eprintln("Could not ask Erlang: " + reason)
       Nil
     }
   }
 
   match process.run("erl", ["-noshell", "-eval", "halt(3)."]) {
     Ok(output) -> {
-      let _ = io.println("halt(3) exits with " + int.to_string(output.status))
+      io.println("halt(3) exits with " + int.to_string(output.status))
       Nil
     }
     Error(problem) -> {
-      let _ = io.eprintln(problem.message)
+      io.eprintln(problem.message)
       Nil
     }
   }
@@ -41,7 +41,7 @@ main() {
   match process.run("no-such-command", []) {
     Ok(_) -> Nil
     Error(problem) -> {
-      let _ = io.println("no-such-command: " + problem.message)
+      io.println("no-such-command: " + problem.message)
       Nil
     }
   }

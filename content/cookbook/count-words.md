@@ -30,7 +30,7 @@ owl: 2
   <li><strong>Read the file.</strong> <code>file.read</code> never throws: a missing file comes back as <code>Error(FileError)</code>, carrying the path and a message. The <code>match</code> makes both outcomes explicit.</li>
   <li><strong>Make words.</strong> Lowercase the text so “The” and “the” count together, turn newlines into spaces, split on spaces, and drop the empty strings left by double spaces.</li>
   <li><strong>Tally.</strong> <code>count</code> folds over the words with a <code>Dict(String, Int)</code>. <code>upsert</code> hands you the current count as an <code>Option</code>: <code>None</code> the first time, <code>Some(n)</code> after.</li>
-  <li><strong>Rank and print.</strong> Turn the dict into pairs, sort by the count (<code>b.1</code> before <code>a.1</code> for descending order), take three and print each. <code>io.println</code> returns a <code>Result</code>, so it's discarded with <code>let _ =</code>.</li>
+  <li><strong>Rank and print.</strong> Turn the dict into pairs, sort by the count (<code>b.1</code> before <code>a.1</code> for descending order), take three and print each.</li>
 </ol>
 
 <div class="callout">

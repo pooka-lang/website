@@ -14,13 +14,13 @@ main() {
   |> list.map(string.trim)
   |> list.filter(fn(name: String) { !string.is_empty(name) })
   |> list.map(capitalise)
-  let _ = io.println(string.join(guests, " · "))
+  io.println(string.join(guests, " · "))
 
   let line = match string.split_once("lamp = lit", "=") {
     Some(#(key, value)) -> string.trim(key) + " is " + string.trim(value)
     None -> "no setting here"
   }
-  let _ = io.println(line)
-  let _ = io.println(string.pad_start("7", 3, "0") + " guests")
+  io.println(line)
+  io.println(string.pad_start("7", 3, "0") + " guests")
   Nil
 }

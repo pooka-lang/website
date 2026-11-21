@@ -21,7 +21,7 @@ main() {
       Ok(age) -> "ok     " + int.to_string(age)
       Error(reason) -> "error  " + reason
     }
-    let _ = io.println(line)
+    io.println(line)
     Nil
   })
 }

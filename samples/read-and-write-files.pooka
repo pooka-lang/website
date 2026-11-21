@@ -14,18 +14,18 @@ keep_notes(path: String) -> Result(String, FileError) {
 main() {
   match keep_notes("notes.txt") {
     Ok(notes) -> {
-      let _ = io.print(notes)
+      io.print(notes)
       Nil
     }
     Error(problem) -> {
-      let _ = io.eprintln(problem.path + ": " + problem.message)
+      io.eprintln(problem.path + ": " + problem.message)
       Nil
     }
   }
   match file.read("missing.txt") {
     Ok(_) -> Nil
     Error(problem) -> {
-      let _ = io.println(
+      io.println(
         "Could not read " + problem.path + ": " + problem.message
       )
       Nil

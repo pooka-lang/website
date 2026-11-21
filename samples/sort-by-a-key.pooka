@@ -10,7 +10,7 @@ class Book(title: String, author: String, year: Int)
 
 show(books: List(Book)) -> Nil {
   list.each(books, fn(book: Book) {
-    let _ = io.println(int.to_string(book.year) + "  " + book.title)
+    io.println(int.to_string(book.year) + "  " + book.title)
     Nil
   })
 }
@@ -23,17 +23,17 @@ main() {
     Book("Comet in Moominland", "Jansson", 1946)
   ]
 
-  let _ = io.println("Oldest first:")
+  io.println("Oldest first:")
   show(
     list.sort_by(shelf, fn(a: Book, b: Book) { int.compare(a.year, b.year) })
   )
 
-  let _ = io.println("\nNewest first:")
+  io.println("\nNewest first:")
   show(list.sort_by(shelf, fn(a: Book, b: Book) {
     order.reverse(int.compare(a.year, b.year))
   }))
 
-  let _ = io.println("\nBy author, then title:")
+  io.println("\nBy author, then title:")
   show(list.sort_by(shelf, fn(a: Book, b: Book) {
     match string.compare(a.author, b.author) {
       order.Order.Equal -> string.compare(a.title, b.title)

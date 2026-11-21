@@ -18,7 +18,7 @@ main() {
   counts.keys()
   |> list.sort_by(string.compare)
   |> list.each(fn(drink: String) {
-    let _ = io.println(drink + ": " + int.to_string(counts.get_or(drink, 0)))
+    io.println(drink + ": " + int.to_string(counts.get_or(drink, 0)))
     Nil
   })
 

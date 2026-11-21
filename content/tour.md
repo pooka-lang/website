@@ -31,7 +31,7 @@ module main
 import pooka/io
 
 main() {
-  let assert Ok(_) = io.println("Hello, world")
+  io.println("Hello, world")
 }
 ```
 
@@ -40,7 +40,7 @@ A few things are already happening here.
 - Every file begins with `module`, followed by its name. The name matches the file: `src/main.pooka` declares `module main`.
 - `import pooka/io` brings in the `io` module from the standard library. You call its functions with the module name in front: `io.println`.
 - `main()` is where a program starts when you type `pooka run`.
-- Printing can fail. A terminal can disappear while you are talking to it. So `io.println` returns a `Result`, and `let assert Ok(_) = ...` says: *I expect this to work, and if it does not, please stop the program.* We will meet `Result` properly in [chapter 4](#result).
+- `io.println` writes a line and returns `Nil`. When you need to handle a write failure, use `io.try_println` to get a `Result`. We will meet `Result` properly in [chapter 4](#result).
 
 There is a gentler way to look at a value while you work, called `echo`:
 
