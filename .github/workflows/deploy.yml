@@ -27,7 +27,7 @@ jobs:
           otp-version: "29"
       - uses: peregrinefinch/setup-pooka@v1
         with:
-          pooka-version: "0.3.3"
+          pooka-version: "0.4.0"
       - run: pooka deps download
       - run: pooka test --compact
       - run: pooka run -- check --environment production

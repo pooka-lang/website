@@ -1,6 +1,6 @@
 # Maintaining pooka.run
 
-Install Pooka 0.3.3 and Erlang/OTP 29, then run these commands from the site
+Install Pooka 0.4.0 and Erlang/OTP 29, then run these commands from the site
 checkout:
 
 ```sh
