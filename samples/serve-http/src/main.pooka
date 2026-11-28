@@ -1,0 +1,17 @@
+module main
+
+import pooka/http
+import pooka/otp
+import whiplash
+
+handle(request: http.Request) -> http.Response {
+  match #(request.method, request.segments()) {
+    #(http.Get, ["hello", name]) -> http.text(200, "Hello, " + name + "!")
+    _ -> http.text(404, "Not found")
+  }
+}
+
+main() {
+  let assert Ok(_) = whiplash.start(whiplash.options(8080), handle)
+  otp.sleep_forever()
+}

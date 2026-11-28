@@ -1,0 +1,11 @@
+name = "hello_server"
+version = "1.0.0"
+
+[dependencies]
+pooka_stdlib = ">= 0.4.1 and < 1.0.0"
+pooka_http = ">= 1.0.0 and < 2.0.0"
+pooka_otp = ">= 1.1.0 and < 2.0.0"
+whiplash = ">= 1.0.0 and < 2.0.0"
+
+[dev-dependencies]
+pooka_httpc = ">= 1.0.0 and < 2.0.0"

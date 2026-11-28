@@ -1,0 +1,20 @@
+module server_test
+
+import main
+import pooka/httpc
+import pooka/int
+import whiplash
+
+test "serves a greeting and returns 404 for an unknown route" {
+  let assert Ok(server) = whiplash.start(whiplash.options(0), main.handle)
+  let url = "http://127.0.0.1:" + int.to_string(server.port)
+  let greeting = httpc.get(url + "/hello/Ada")
+  let missing = httpc.get(url + "/missing")
+  whiplash.stop(server)
+
+  let assert Ok(greeting) = greeting
+  let assert Ok(missing) = missing
+  assert greeting.status == 200
+  assert greeting.body == <<"Hello, Ada!":utf8>>
+  assert missing.status == 404
+}

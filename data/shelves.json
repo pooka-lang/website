@@ -5,5 +5,6 @@
   "files": { "title": "Files and processes", "icon": "⌂", "order": 4 },
   "actors": { "title": "Actors and concurrency", "icon": "✉", "order": 5 },
   "interop": { "title": "Interop", "icon": "⇄", "order": 6 },
-  "testing": { "title": "Testing", "icon": "✓", "order": 7 }
+  "web": { "title": "Web servers", "icon": "↗", "order": 7 },
+  "testing": { "title": "Testing", "icon": "✓", "order": 8 }
 }

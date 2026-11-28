@@ -1,0 +1,11 @@
+module main
+
+import pooka/io
+
+greet(name: String) -> String {
+  "Hello, " + name + "!"
+}
+
+main() {
+  io.println(greet("Ada"))
+}
